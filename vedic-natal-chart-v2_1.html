@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;700&family=Cormorant+Infant:wght@400;500;600;700&display=swap&subset=cyrillic,latin">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
   :root{
     --ink:#2c2419; --ink-soft:#6f6353; --ink-faint:#9b8f7c;
@@ -935,6 +936,18 @@ document.getElementById('calc').addEventListener('click',()=>{
   res.scrollIntoView({behavior:'smooth',block:'start'});
   reportHeight();
 });
+
+/* ===== Telegram Mini App: активируется только внутри Telegram, на сайте не влияет ===== */
+if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData!==undefined){
+  const tg=Telegram.WebApp;
+  tg.ready();
+  tg.expand(); // раскрыть на всю высоту
+  try{tg.setHeaderColor('#f6f0e1');tg.setBackgroundColor('#f6f0e1');}catch(e){}
+  // лёгкая вибрация при получении результата — приятная нативная мелочь
+  document.getElementById('calc').addEventListener('click',()=>{
+    setTimeout(()=>{try{tg.HapticFeedback.notificationOccurred('success');}catch(e){}},600);
+  });
+}
 
 /* ===== авто-высота для iframe (сообщает высоту родительскому окну через postMessage) ===== */
 function reportHeight(){
