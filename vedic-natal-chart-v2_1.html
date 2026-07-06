@@ -139,6 +139,13 @@
   .n-asc{font-family:var(--sans);font-size:9.5px;letter-spacing:.12em;fill:var(--gold)}
   .legend{font-size:12px;color:var(--ink-faint);margin-top:10px;line-height:1.8}
   .legend i{color:var(--terra);font-style:normal}
+  .chart-note{background:var(--card-soft);border:1px solid var(--line);border-radius:14px;padding:20px 22px;align-self:start}
+  .chart-note h5{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+  .chart-note p{font-size:14.5px;color:var(--ink-soft);line-height:1.7;margin-bottom:12px}
+  .chart-note p b{color:var(--ink);font-weight:600}
+  .abbr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:8px 14px;margin-top:4px}
+  .abbr-grid span{font-size:14px;color:var(--ink-soft);white-space:nowrap}
+  .abbr-grid b{display:inline-block;min-width:30px;color:var(--terra);font-weight:700}
 
   /* даша */
   .dasha details{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:#fff;overflow:hidden}
@@ -250,15 +257,6 @@
 
     <div class="sec">
       <div class="sec-head">
-        <div><p class="sec-eyebrow">Наватара</p><p class="sec-title">9 тар от накшатры Луны (джанмы)</p></div>
-        <span class="sec-count">27 накшатр</span>
-      </div>
-      <p class="tara-intro">Наватара делит 27 накшатр на 9 групп (тар), отсчитывая от вашей джанма-накшатры — накшатры Луны. Дни, когда Луна проходит по накшатрам благоприятных тар, поддерживают ваши дела; по напряжённым — требуют осторожности в начинаниях.</p>
-      <div class="tara-list" id="taraList"></div>
-    </div>
-
-    <div class="sec">
-      <div class="sec-head">
         <div><p class="sec-eyebrow">Раши-чакра D1</p><p class="sec-title">Карта в северном стиле</p></div>
       </div>
       <div class="chart-flex">
@@ -266,8 +264,17 @@
           <svg class="north" id="north" viewBox="0 0 400 400" role="img" aria-label="Натальная карта в северном индийском стиле"></svg>
           <div class="legend">дома отсчитаны от лагны · числа — знаки (1 Овен … 12 Рыбы) · <i>терракотовым</i> отмечены ретроградные грахи</div>
         </div>
-        <div class="mlist" style="display:block" id="chartNote"></div>
+        <div class="chart-note" id="chartNote"></div>
       </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head">
+        <div><p class="sec-eyebrow">Наватара</p><p class="sec-title">9 тар от накшатры Луны (джанмы)</p></div>
+        <span class="sec-count">27 накшатр</span>
+      </div>
+      <p class="tara-intro">Наватара делит 27 накшатр на 9 групп (тар), отсчитывая от вашей джанма-накшатры — накшатры Луны. Дни, когда Луна проходит по накшатрам благоприятных тар, поддерживают ваши дела; по напряжённым — требуют осторожности в начинаниях.</p>
+      <div class="tara-list" id="taraList"></div>
     </div>
 
     <div class="sec">
@@ -910,7 +917,15 @@ document.getElementById('calc').addEventListener('click',()=>{
   renderNavatara(mnk.i);
   drawNorth(chart);
   document.getElementById('chartNote').innerHTML=
-    `<p style="font-size:14px;color:var(--ink-soft);line-height:1.8">Раши-чакра показывает положение девяти грах в двенадцати домах от лагны. Знак каждого дома подписан числом: 1 — Овен, 2 — Телец и далее по кругу. Сокращения: Со — Солнце, Лу — Луна, Ме — Меркурий, Ве — Венера, Ма — Марс, Юп — Юпитер, Са — Сатурн, Ра — Раху, Ке — Кету.</p>`;
+    `<h5>Как читать карту</h5>
+     <p><b>Дома</b> отсчитываются от лагны: лагна — всегда верхний центральный ромб, дальше дома идут против часовой стрелки.</p>
+     <p><b>Числа в домах</b> — знаки зодиака: 1 Овен, 2 Телец, 3 Близнецы… 12 Рыбы.</p>
+     <p><b>Грахи</b> подписаны сокращениями с градусом в знаке:</p>
+     <div class="abbr-grid">
+       <span><b>Со</b>Солнце</span><span><b>Лу</b>Луна</span><span><b>Ме</b>Меркурий</span>
+       <span><b>Ве</b>Венера</span><span><b>Ма</b>Марс</span><span><b>Юп</b>Юпитер</span>
+       <span><b>Са</b>Сатурн</span><span><b>Ра</b>Раху</span><span><b>Ке</b>Кету</span>
+     </div>`;
   renderDasha(mahas,dateUTC.getTime());
   document.getElementById('foot').innerHTML=
     `${place.name}${place.admin1?', '+place.admin1:''}${place.country?', '+place.country:''} · ${place.latitude.toFixed(3)}°, ${place.longitude.toFixed(3)}° · ${place.timezone}<br>`+
