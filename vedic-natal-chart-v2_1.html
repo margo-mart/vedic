@@ -113,7 +113,7 @@
   td{padding:11px 10px;border-bottom:1px solid var(--line);color:var(--ink-soft)}
   tr:last-child td{border-bottom:none}
   tr:hover td{background:var(--card-soft)}
-  td.pname{font-weight:500;color:var(--ink)} td.nk{color:var(--ink)}
+  td.pname{font-weight:500;color:var(--ink)} td.nk{color:var(--ink);font-weight:700}
 
   /* мобильные карточки вместо таблицы — пада и дом видны сразу */
   .mlist{display:block}
@@ -125,7 +125,7 @@
   .mrow .top span{font-size:14px;color:var(--ink-soft)}
   .mrow dl{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;margin-top:10px;font-size:13.5px}
   .mrow dl div{display:flex;justify-content:space-between;gap:8px}
-  .mrow dt{color:var(--ink-faint)} .mrow dd{color:var(--ink);text-align:right}
+  .mrow dt{color:var(--ink-faint)} .mrow dd{color:var(--ink);text-align:right} .mrow dd.nk{font-weight:700}
 
   /* северная карта */
   .chart-flex{display:grid;gap:24px;align-items:start}
@@ -242,12 +242,12 @@
 
     <div class="sec">
       <div class="sec-head">
-        <div><p class="sec-eyebrow">Данные джйотиш</p><p class="sec-title">Технические данные карты</p></div>
+        <div><p class="sec-eyebrow">Данные джйотиш</p><p class="sec-title">Натальная карта</p></div>
         <span class="sec-count">10 точек</span>
       </div>
       <div class="dtable">
         <table>
-          <thead><tr><th>Точка</th><th>Знак</th><th>Градус</th><th>Дом</th><th>Накшатра</th><th>Пада</th><th>Управитель</th><th>Ретроградность</th></tr></thead>
+          <thead><tr><th>Точка</th><th>Знак</th><th>Градус</th><th>Дом</th><th>Накшатра</th><th>Пада</th><th>Управитель накшатры</th></tr></thead>
           <tbody id="tbody"></tbody>
         </table>
       </div>
@@ -797,23 +797,22 @@ function nakCard(role,nakI,pada,sign,extra){
 
 function rowData(chart){
   const ank=nakOf(chart.asc);
-  const rows=[{name:"Лагна",sign:RASHI[chart.lagnaSign],deg:chart.asc%30,house:1,nakI:ank.i,pada:ank.pada,retro:false}];
-  for(const p of chart.planets)rows.push({name:p.name,sign:RASHI[p.sign],deg:p.deg,house:p.house,nakI:p.nakI,pada:p.pada,retro:p.retro&&p.name!=='Раху'&&p.name!=='Кету'});
+  const rows=[{name:"Лагна (восходящий знак)",sign:RASHI[chart.lagnaSign],deg:chart.asc%30,house:1,nakI:ank.i,pada:ank.pada}];
+  for(const p of chart.planets)rows.push({name:p.name,sign:RASHI[p.sign],deg:p.deg,house:p.house,nakI:p.nakI,pada:p.pada});
   return rows;
 }
 function renderTable(rows){
   document.getElementById('tbody').innerHTML=rows.map(r=>
-    `<tr><td class="pname">${r.name}</td><td>${r.sign}</td><td>${r.deg.toFixed(2)}°</td><td>${r.house}</td><td class="nk">${NAK[r.nakI]}</td><td>${r.pada}</td><td>${nakLord(r.nakI)}</td><td>${r.retro?'Да':'Нет'}</td></tr>`).join('');
+    `<tr><td class="pname">${r.name}</td><td>${r.sign}</td><td>${r.deg.toFixed(2)}°</td><td>${r.house}</td><td class="nk">${NAK[r.nakI]}</td><td>${r.pada}</td><td>${nakLord(r.nakI)}</td></tr>`).join('');
   document.getElementById('mlist').innerHTML=rows.map(r=>
     `<article class="mrow">
       <div class="top"><b>${r.name}</b><span>${r.sign}</span></div>
       <dl>
         <div><dt>Градус</dt><dd>${r.deg.toFixed(2)}°</dd></div>
         <div><dt>Дом</dt><dd>${r.house}</dd></div>
-        <div><dt>Накшатра</dt><dd>${NAK[r.nakI]}</dd></div>
+        <div><dt>Накшатра</dt><dd class="nk">${NAK[r.nakI]}</dd></div>
         <div><dt>Пада</dt><dd>${r.pada}</dd></div>
-        <div><dt>Управитель</dt><dd>${nakLord(r.nakI)}</dd></div>
-        <div><dt>Ретроградность</dt><dd>${r.retro?'Да':'Нет'}</dd></div>
+        <div><dt>Управитель накшатры</dt><dd>${nakLord(r.nakI)}</dd></div>
       </dl>
     </article>`).join('');
 }
