@@ -86,8 +86,9 @@
   .ncard{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 14px 44px rgba(60,45,20,.08)}
   .ncard .role{font-size:11px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--terra)}
   .ncard h3{font-family:var(--serif);font-weight:600;font-size:2.2rem;line-height:.98;margin-top:7px}
-  .ncard .badge-num{float:right;display:flex;height:52px;width:52px;align-items:center;justify-content:center;border-radius:50%;
+  .ncard .badge-num{float:right;position:relative;display:flex;height:56px;width:56px;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;
     border:1px solid var(--line-strong);background:var(--card-soft);color:var(--gold);font-family:var(--serif);font-weight:600;font-size:18px}
+  .ncard .badge-num img.nak-ic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
   .ncard dl{margin-top:16px;border-top:1px solid var(--line);font-size:14px}
   .ncard dl div{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line)}
   .ncard dl div:last-child{border-bottom:none}
@@ -197,7 +198,7 @@
 
     <section class="form-card" id="formCard">
       <div class="fgrid">
-        <label class="f"><span>Дата рождения</span><input type="date" id="date" min="1800-01-01" max="2100-12-31"></label>
+        <label class="f"><span>Дата рождения</span><input type="text" id="date" inputmode="numeric" placeholder="ДД.ММ.ГГГГ" maxlength="10" autocomplete="bday"></label>
         <label class="f"><span>Время рождения</span><input type="time" id="time"></label>
         <div class="col2">
           <label class="f"><span>Город рождения</span><input type="text" id="city" placeholder="Начните вводить город" autocomplete="off"></label>
@@ -772,7 +773,7 @@ function nakCard(role,nakI,pada,sign,extra){
   const d=NAKD[nakI];
   return `<article class="ncard">
     <div>
-      <span class="badge-num">${nakI+1}<span style="font-size:11px;color:var(--ink-faint)">/27</span></span>
+      <span class="badge-num"><img class="nak-ic" src="icons/${nakI+1}.png" alt="" loading="lazy" onerror="this.style.display='none'"><span class="bn">${nakI+1}<span style="font-size:11px;color:var(--ink-faint)">/27</span></span></span>
       <p class="role">${role}</p>
       <h3>${NAK[nakI]}</h3>
     </div>
@@ -854,6 +855,25 @@ function renderNavatara(janmaIdx){
   document.getElementById('taraList').innerHTML=html;
 }
 
+/* маска даты: одинаковый формат ДД.ММ.ГГГГ для всех устройств и локалей */
+const dateEl=document.getElementById('date');
+dateEl.addEventListener('input',()=>{
+  const v=dateEl.value.replace(/\D/g,'').slice(0,8);
+  let out=v.slice(0,2);
+  if(v.length>2)out+='.'+v.slice(2,4);
+  if(v.length>4)out+='.'+v.slice(4,8);
+  dateEl.value=out;
+});
+function parseDateRu(s){
+  const m=s.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+  if(!m)return null;
+  const d=+m[1],mo=+m[2],y=+m[3];
+  if(y<1800||y>2100||mo<1||mo>12||d<1||d>31)return null;
+  const t=new Date(Date.UTC(y,mo-1,d));
+  if(t.getUTCFullYear()!==y||t.getUTCMonth()!==mo-1||t.getUTCDate()!==d)return null;
+  return{y,mo,d};
+}
+
 document.getElementById('editBtn')?.addEventListener('click',()=>{document.getElementById('formCard').scrollIntoView({behavior:'smooth'});});
 
 document.getElementById('calc').addEventListener('click',()=>{
@@ -868,9 +888,10 @@ document.getElementById('calc').addEventListener('click',()=>{
     place={name:'Указанные координаты',admin1:'',country:'',latitude:+mlat,longitude:+mlon,timezone:mtz};
   }else if(selected){place=selected;}
   if(!place){errEl.textContent='Выберите город из списка или введите координаты и таймзону вручную.';return;}
-  if(!dateV){errEl.textContent='Укажите дату рождения.';return;}
+  const pd=parseDateRu(dateV);
+  if(!pd){errEl.textContent='Укажите дату рождения в формате ДД.ММ.ГГГГ, например 26.07.1990.';return;}
   let noon=false;if(!timeV){timeV='12:00';noon=true;}
-  const[y,mo,d]=dateV.split('-').map(Number);
+  const{y,mo,d}=pd;
   const[h,mi]=timeV.split(':').map(Number);
   const dateUTC=localToUTC(y,mo,d,h,mi,place.timezone);
   const chart=computeChart(dateUTC,place.latitude,place.longitude);
