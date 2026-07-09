@@ -193,6 +193,19 @@
   .icard .num{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--gold);line-height:1}
   .icard h4{font-size:15px;font-weight:600;margin-top:12px}
   .icard p{font-size:14px;color:var(--ink-soft);margin-top:8px}
+
+  /* панчанга */
+  select#ptz{width:100%;border:1px solid rgba(44,36,25,.18);background:#fff;border-radius:10px;padding:12px 14px;font-size:14px;font-family:var(--sans);color:var(--ink);outline:none}
+  select#ptz:focus{border-color:var(--terra);box-shadow:0 0 0 3px rgba(176,81,44,.16)}
+  .pgrid{display:grid;gap:14px;margin-top:22px}
+  @media(min-width:640px){.pgrid{grid-template-columns:1fr 1fr}}
+  @media(min-width:980px){.pgrid{grid-template-columns:repeat(3,1fr)}}
+  .pblock{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .pblock .pl{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--terra)}
+  .pblock .pv{font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.1;margin-top:6px}
+  .pblock .ps{font-size:13px;color:var(--ink-soft);margin-top:6px;line-height:1.6}
+  .pblock .ps b{color:var(--ink);font-weight:600}
+  .pblock.pwide{grid-column:1/-1;background:var(--card-soft);border-color:rgba(168,132,44,.35)}
 </style>
 </head>
 <body>
@@ -285,6 +298,21 @@
       <div class="dasha" id="dasha"></div>
       <p class="method" id="foot"></p>
     </div>
+  </section>
+
+  <section class="panel" id="panchanga" style="margin-top:56px">
+    <div class="eyerow"><span class="dash" style="width:32px"></span><p class="eyebrow">Панчанга · пять элементов дня</p></div>
+    <h2 style="font-family:var(--serif);font-weight:600;font-size:clamp(26px,4vw,34px);line-height:1.05;margin-top:12px">Ведический календарь на дату</h2>
+    <p class="lede" style="margin-top:12px;font-size:15px;max-width:64ch">Панчанга — система пяти элементов времени в джйотиш: вара, титхи, накшатра, йога и карана. По ним подбирают благоприятное время для дел (мухурта). По умолчанию показано текущее время, можно рассчитать любую дату.</p>
+    <div class="fgrid" style="margin-top:20px;grid-template-columns:1fr 1fr 1fr">
+      <label class="f"><span>Дата</span><input type="text" id="pdate" inputmode="numeric" placeholder="ДД.ММ.ГГГГ" maxlength="10"></label>
+      <label class="f"><span>Время</span><input type="time" id="ptime"></label>
+      <label class="f"><span>Часовой пояс</span><select id="ptz"></select></label>
+    </div>
+    <button class="btn" id="pcalc" style="margin-top:14px">Рассчитать панчанг</button>
+    <div class="err" id="perr"></div>
+    <div class="pgrid" id="pgrid"></div>
+    <p class="method" id="pfoot" style="display:none">Вара указана по календарным суткам выбранного пояса (классически отсчитывается от восхода Солнца). Титхи, накшатра, йога и карана — по точным положениям Солнца и Луны, сидерический зодиак, айанамша Лахири. Рекомендации дня — по материалам курса «Накшатры» Валерии Желамской, nakshatri.ru.</p>
   </section>
 
   <section class="info3">
@@ -935,6 +963,141 @@ document.getElementById('calc').addEventListener('click',()=>{
   res.classList.add('show');
   res.scrollIntoView({behavior:'smooth',block:'start'});
   reportHeight();
+});
+
+/* Энергии дня по накшатрам — по материалам «Накшатры. Энергия дня», книги «Главы о накшатрах» и календарей Валерии Желамской (nakshatri.ru) */
+const NAKDAY=[
+{t:"Лёгкая и быстрая энергия, помогающая скоро достигать результатов. День подходит для новых начинаний, путешествий, начала лечения и оздоровительных практик, движения вперёд.",tip:"Дайте движение делам, которые этого ждали, проявите смелость и заявите свои намерения!"},
+{t:"День несёт резкую энергию трансформации. Не подходит для материальных начинаний, но эффективен для внутренней работы, аскез, постов и исследования глубин своей психики.",tip:"Проявите честность с собой, наведите порядок в делах и отстройте границы!"},
+{t:"Время смелых и решительных действий, ясности и огня. Хорошо избавляться от старого и вредных привычек, завершать отжившее, писать планы и находить мотивацию.",tip:"Очистите пространство, отсеките лишнее и сформулируйте намерения!"},
+{t:"Один из самых благоприятных дней для новых начинаний: дела получают поддержку энергии роста и процветания. Подходит для сферы отношений, творчества, финансов и заботы о теле.",tip:"Направьте силы на развитие и укрепление того, что уже растёт!"},
+{t:"День поиска и любознательности. Подходит для обучения, переговоров, исследований и сбора информации. Не подходит для окончательных решений.",tip:"Изучайте, задавайте вопросы, уточняйте детали и не торопитесь с выводами!"},
+{t:"Энергии дня требуют внимательности к внутреннему состоянию: возможны яркие эмоции. Подходит для освобождения от старого и честного взгляда на процессы, не рекомендуется начинать новые проекты.",tip:"Освободитесь от лишнего напряжения, займитесь очищением и выберите спокойный ритм!"},
+{t:"День восстановления и возвращения к важному. Замечательно начать заново то, что не получилось с первой попытки. Не стоит перегружать себя задачами.",tip:"Дайте второй шанс отложенному делу и сосредоточьтесь на том, что даёт устойчивость!"},
+{t:"Одна из лучших накшатр для новых начинаний. День питает и поддерживает: подходит для заботы о близких, обучения, передачи знаний, создания уюта и духовных практик.",tip:"Заложите фундамент важного дела и уделите время заботе о себе и пространстве!"},
+{t:"Мистический день инсайтов и самопознания. Подходит для практик, медитации и работы с энергией, но неблагоприятен для материальных и стабильных начинаний.",tip:"Прислушайтесь к интуиции, будьте внимательны к словам и не поддавайтесь на провокации!"},
+{t:"Энергии дня наполнены силой внутреннего лидерства и опоры на корни. Благоприятно решать статусные вопросы, укреплять уверенность и делать практики почитания предков.",tip:"Начните день с благодарности роду и действуйте из состояния внутренней силы!"},
+{t:"Мягкий день творчества, удовольствия и отношений. Подходит для общения, приятных дел и восстановления эмоционального баланса. Не лучший день для жёстких решений.",tip:"Побалуйте себя приятным, уделите внимание близким и создайте атмосферу тепла!"},
+{t:"День порядка и надёжности. Хорош для новых начинаний, организации процессов, договорённостей и укрепления текущих дел.",tip:"Действуйте последовательно и обязательно выполняйте обещания!"},
+{t:"День ясности, практичности и светлого труда. Идеален для наведения порядка, ручной работы, сделок и бытовых вопросов. Не подходит для долгосрочного планирования.",tip:"Доведите до ума то, что требовало внимания, и позаботьтесь о доме и теле!"},
+{t:"Яркий день формы и самовыражения. Поддерживает красоту, творчество и внутренний баланс, решение организационных вопросов и украшение пространства.",tip:"Займитесь творчеством и приведите дела и пространство к гармонии!"},
+{t:"Подвижный день гибкости и коммуникации. Подходит для переговоров, торговли, распространения информации и духовных практик. Не подходит для импульсивных финансовых решений.",tip:"Сохраняйте гибкость, будьте открыты новым контактам и доверяйте потоку жизни!"},
+{t:"День целей и приоритетов. Энергия помогает концентрироваться на результате и выстраивать долгосрочные планы. Не форсируйте события и не распыляйтесь.",tip:"Определите главное направление и двигайтесь к нему без лишней суеты!"},
+{t:"Энергия дружбы и сотрудничества. Подходит для совместных дел, укрепления связей, примирений и поиска союзников.",tip:"Обратитесь к тем, с кем важно быть на одной стороне, и укрепите значимые связи!"},
+{t:"День силы и внутреннего авторитета. Подходит для смелых действий, ответственности и зрелых решений. Не подходит для эмоциональных реакций и доказательства правоты.",tip:"Действуйте из зрелости и внутренней устойчивости!"},
+{t:"Глубокий день трансформации: время увидеть корень проблем, освободиться от лишнего и завершить старые процессы. Не начинайте новые дела.",tip:"Отпустите то, что больше не имеет опоры, и сосредоточьтесь на сути!"},
+{t:"Сильный день для амбициозных шагов, решимости и веры в победу. Подходит для продвижения целей, творчества и ухода за собой. Будьте осторожны с конфликтами: энергия склонна их разжигать.",tip:"Поддержите себя действиями, которые укрепляют веру в выбранный путь!"},
+{t:"Один из лучших дней для начинаний с долгосрочным и устойчивым результатом. Благоприятно создавать альянсы, заключать партнёрства, планировать и структурировать задачи.",tip:"Делайте ставку на дисциплину и объединение усилий, действуйте честно!"},
+{t:"День знаний и слушания. Подходит для обучения, обмена опытом, коммуникации и договорённостей, восстановления гармонии.",tip:"Прислушайтесь к словам и знакам дня, в них может быть важная подсказка!"},
+{t:"Активный и ресурсный день. Подходит для реализации задач, командной работы и движения вперёд в ритме со своими целями. Не стоит распыляться на много направлений.",tip:"Соберите энергию в главное дело и переходите от слов к действиям!"},
+{t:"День уединения, исцеления и исследований. Подходит для заботы о здоровье, практик очищения и глубокой внутренней работы. Не подходит для шумных и масштабных начинаний.",tip:"Отключитесь от лишнего, уделите время здоровью и тишине!"},
+{t:"Интенсивный день внутреннего жара. Подходит для трансформаций, медитаций, благодарности и творчества. Не подходит для рискованных решений и конфликтов.",tip:"Направьте сильную энергию дня в практики и творческое горение!"},
+{t:"Глубокий и спокойный день. Важно замедлиться, послушать себя и быть бережными к своим состояниям. Благоприятен для внутренней работы, медитации и заботы о себе.",tip:"Снизьте темп, найдите внутренние опоры и не спешите с решениями!"},
+{t:"Мягкая творческая энергия завершения цикла. Успех приходит через интуицию. Подходит для творчества, спокойной работы, завершений и заботы. Не подходит для давления и спешки.",tip:"Двигайтесь в естественном темпе, слушайте себя и завершайте начатое с любовью!"}
+];
+function tithiNote(t){
+  if(t===11||t===26)return"Экадаши: традиционный день поста, очищения и духовных практик.";
+  if(t===14||t===29)return"14-е сутки: не подходят для новых начинаний, подведите итоги.";
+  if(t===15)return"Пурнима, полнолуние: время практик, бережности к эмоциям, не перегружайте себя делами.";
+  if(t===30)return"Амавасья, новолуние: день перезагрузки, тишины и намерений на новый цикл.";
+  return"";
+}
+
+/* ===================== ПАНЧАНГА ===================== */
+const VARA=[["Воскресенье","Солнца"],["Понедельник","Луны"],["Вторник","Марса"],["Среда","Меркурия"],["Четверг","Юпитера"],["Пятница","Венеры"],["Суббота","Сатурна"]];
+const TITHI_N=["Пратипада","Двития","Трития","Чатуртхи","Панчами","Шашти","Саптами","Аштами","Навами","Дашами","Экадаши","Двадаши","Трайодаши","Чатурдаши"];
+const YOGA27=["Вишкамбха","Прити","Аюшман","Саубхагья","Шобхана","Атиганда","Сукарма","Дхрити","Шула","Ганда","Вриддхи","Дхрува","Вьягхата","Харшана","Ваджра","Сиддхи","Вьятипата","Вариян","Паригха","Шива","Сиддха","Садхья","Шубха","Шукла","Брахма","Индра","Вайдхрити"];
+const KAR_MOV=["Бава","Балава","Каулава","Тайтила","Гара","Ваниджа","Вишти"];
+function karanaName(k){if(k===0)return"Кимстугхна";if(k===57)return"Шакуни";if(k===58)return"Чатушпада";if(k===59)return"Нага";return KAR_MOV[(k-1)%7];}
+function tithiName(t){if(t===15)return"Пурнима";if(t===30)return"Амавасья";return TITHI_N[(t-1)%15];}
+
+const sidSun=d=>norm(tropLon(Astronomy.Body.Sun,d)-ayanamsa(JD(d)));
+const sidMoon=d=>norm(tropLon(Astronomy.Body.Moon,d)-ayanamsa(JD(d)));
+
+/* поиск момента, когда монотонно растущая величина пересечёт следующую границу шага */
+function nextCross(valueFn,current,step,startMs){
+  const target=((Math.floor(current/step)+1)*step)%360;
+  const g=ms=>((valueFn(new Date(ms))-target+540)%360)-180;
+  let prev=g(startMs);
+  for(let k=1;k<=400;k++){ // до ~66 часов шагом 10 минут
+    const t=startMs+k*600000, cur=g(t);
+    if(prev<0&&cur>=0){
+      let lo=t-600000,hi=t;
+      for(let i=0;i<18;i++){const m=(lo+hi)/2;(g(m)<0)?lo=m:hi=m;}
+      return (lo+hi)/2;
+    }
+    prev=cur;
+  }
+  return null;
+}
+function fmtInOffset(ms,offMin,baseY,baseMo,baseD){
+  const l=new Date(ms+offMin*60000);
+  const hm=`${String(l.getUTCHours()).padStart(2,'0')}:${String(l.getUTCMinutes()).padStart(2,'0')}`;
+  const same=l.getUTCFullYear()===baseY&&l.getUTCMonth()===baseMo-1&&l.getUTCDate()===baseD;
+  return same?hm:`${String(l.getUTCDate()).padStart(2,'0')}.${String(l.getUTCMonth()+1).padStart(2,'0')} ${hm}`;
+}
+
+/* маска даты для поля панчанга */
+const pdateEl=document.getElementById('pdate');
+pdateEl.addEventListener('input',()=>{
+  const v=pdateEl.value.replace(/\D/g,'').slice(0,8);
+  let out=v.slice(0,2);
+  if(v.length>2)out+='.'+v.slice(2,4);
+  if(v.length>4)out+='.'+v.slice(4,8);
+  pdateEl.value=out;
+});
+/* селект пояса + дефолты (текущие дата и время устройства) */
+(function(){
+  const sel=document.getElementById('ptz');
+  const opts=[["-12",-720],["-11",-660],["-10",-600],["-9",-540],["-8",-480],["-7",-420],["-6",-360],["-5",-300],["-4",-240],["-3:30",-210],["-3",-180],["-2",-120],["-1",-60],["0",0],["+1",60],["+2",120],["+3",180],["+3:30",210],["+4",240],["+4:30",270],["+5",300],["+5:30",330],["+5:45",345],["+6",360],["+6:30",390],["+7",420],["+8",480],["+9",540],["+9:30",570],["+10",600],["+11",660],["+12",720],["+13",780],["+14",840]];
+  sel.innerHTML=opts.map(o=>`<option value="${o[1]}">UTC${o[0]}</option>`).join('');
+  const devOff=-new Date().getTimezoneOffset();
+  const have=opts.find(o=>o[1]===devOff);
+  sel.value=String(have?devOff:180);
+  const nowL=new Date(Date.now()+(+sel.value)*60000);
+  pdateEl.value=`${String(nowL.getUTCDate()).padStart(2,'0')}.${String(nowL.getUTCMonth()+1).padStart(2,'0')}.${nowL.getUTCFullYear()}`;
+  document.getElementById('ptime').value=`${String(nowL.getUTCHours()).padStart(2,'0')}:${String(nowL.getUTCMinutes()).padStart(2,'0')}`;
+})();
+
+document.getElementById('pcalc').addEventListener('click',()=>{
+  const perr=document.getElementById('perr');perr.textContent='';
+  const pd=parseDateRu(pdateEl.value);
+  if(!pd){perr.textContent='Укажите дату в формате ДД.ММ.ГГГГ.';return;}
+  let tv=document.getElementById('ptime').value||'12:00';
+  const[h,mi]=tv.split(':').map(Number);
+  const offMin=+document.getElementById('ptz').value;
+  const{y,mo,d}=pd;
+  const utcMs=Date.UTC(y,mo-1,d,h,mi)-offMin*60000;
+  const date=new Date(utcMs);
+
+  const sun=sidSun(date),moon=sidMoon(date);
+  const diff=norm(moon-sun),sum=norm(sun+moon);
+  const tithi=Math.floor(diff/12)+1;
+  const paksha=tithi<=15?"Шукла-пакша · растущая Луна":"Кришна-пакша · убывающая Луна";
+  const yoga=Math.floor(sum/(40/3))+1;
+  const kar=Math.floor(diff/6);
+  const nk=nakOf(moon);
+  const vara=VARA[new Date(Date.UTC(y,mo-1,d)).getUTCDay()];
+  const moonSign=RASHI[Math.floor(moon/30)];
+
+  const tTithi=nextCross(t=>norm(sidMoon(t)-sidSun(t)),diff,12,utcMs);
+  const tNak=nextCross(t=>sidMoon(t),moon,40/3,utcMs);
+  const tYoga=nextCross(t=>norm(sidSun(t)+sidMoon(t)),sum,40/3,utcMs);
+  const tKar=nextCross(t=>norm(sidMoon(t)-sidSun(t)),diff,6,utcMs);
+  const F=ms=>ms?fmtInOffset(ms,offMin,y,mo,d):'—';
+  const nextTithi=tithiName(tithi%30+1),nextNak=NAK[(nk.i+1)%27],nextYoga=YOGA27[yoga%27],nextKar=karanaName((kar+1)%60);
+
+  const tnote=tithiNote(tithi);
+  document.getElementById('pgrid').innerHTML=
+    `<div class="pblock pwide"><div class="pl">Энергия дня · накшатра ${NAK[nk.i]}</div><div class="ps" style="margin-top:8px;font-size:14.5px">${NAKDAY[nk.i].t}<br><b>👉 ${NAKDAY[nk.i].tip}</b></div></div>`+
+    `<div class="pblock"><div class="pl">Вара · день недели</div><div class="pv">${vara[0]}</div><div class="ps">день <b>${vara[1]}</b></div></div>`+
+    `<div class="pblock"><div class="pl">Титхи · лунный день</div><div class="pv">${tithiName(tithi)}</div><div class="ps">${tithi<=15?tithi:tithi-15}-я титхи · ${paksha}<br>до <b>${F(tTithi)}</b>, далее ${nextTithi}${tnote?`<br><b>${tnote}</b>`:''}</div></div>`+
+    `<div class="pblock"><div class="pl">Накшатра Луны</div><div class="pv">${NAK[nk.i]}</div><div class="ps">пада ${nk.pada} · Луна в знаке <b>${moonSign}</b><br>до <b>${F(tNak)}</b>, далее ${nextNak}</div></div>`+
+    `<div class="pblock"><div class="pl">Йога</div><div class="pv">${YOGA27[yoga-1]}</div><div class="ps">${yoga}-я из 27<br>до <b>${F(tYoga)}</b>, далее ${nextYoga}</div></div>`+
+    `<div class="pblock"><div class="pl">Карана</div><div class="pv">${karanaName(kar)}</div><div class="ps">половина титхи${karanaName(kar)==='Вишти'?' · <b>Вишти (Бхадра)</b>, не подходит для начинаний':''}<br>до <b>${F(tKar)}</b>, далее ${nextKar}</div></div>`+
+    `<div class="pblock"><div class="pl">Момент расчёта</div><div class="pv">${String(d).padStart(2,'0')}.${String(mo).padStart(2,'0')}.${y}</div><div class="ps">${tv} · UTC${offMin>=0?'+':''}${offMin%60===0?offMin/60:(offMin/60).toFixed(2)}</div></div>`;
+  document.getElementById('pfoot').style.display='block';
+  if(typeof reportHeight==='function')try{reportHeight();}catch(e){}
 });
 
 /* ===== Telegram Mini App: активируется только внутри Telegram, на сайте не влияет ===== */
