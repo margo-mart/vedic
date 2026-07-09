@@ -205,6 +205,17 @@
   .pblock .pv{font-family:var(--serif);font-weight:600;font-size:26px;line-height:1.1;margin-top:6px}
   .pblock .ps{font-size:13px;color:var(--ink-soft);margin-top:6px;line-height:1.6}
   .pblock .ps b{color:var(--ink);font-weight:600}
+  .prate{font-size:13px;font-weight:700;margin-top:6px;line-height:1.4}
+  .prate.g{color:var(--gold)} .prate.h{color:var(--terra)}
+  .tg-banner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:22px;
+    background:linear-gradient(120deg,rgba(168,132,44,.10),rgba(176,81,44,.08));
+    border:1px solid rgba(168,132,44,.45);border-radius:16px;padding:20px 22px}
+  .tg-banner .tb-t{font-family:var(--serif);font-weight:600;font-size:20px;line-height:1.25}
+  .tg-banner .tb-s{font-size:13.5px;color:var(--ink-soft);margin-top:4px}
+  .tg-banner a.tb-btn{display:inline-flex;align-items:center;gap:8px;background:var(--terra);color:#fdf6e9;
+    text-decoration:none;font-weight:600;font-size:14px;padding:13px 22px;border-radius:10px;
+    box-shadow:0 10px 24px rgba(176,81,44,.24);transition:background .2s;white-space:nowrap}
+  .tg-banner a.tb-btn:hover{background:var(--terra-deep)}
   .pblock.pwide{grid-column:1/-1;background:var(--card-soft);border-color:rgba(168,132,44,.35)}
 </style>
 </head>
@@ -305,7 +316,13 @@
     <h2 style="font-family:var(--serif);font-weight:600;font-size:clamp(26px,4vw,34px);line-height:1.05;margin-top:12px">Ведический календарь на дату</h2>
     <p class="lede" style="margin-top:12px;font-size:15px;max-width:64ch">Панчанга — система пяти элементов времени в джйотиш: вара, титхи, накшатра, йога и карана. По ним подбирают благоприятное время для дел (мухурта). По умолчанию показано текущее время, можно рассчитать любую дату.</p>
     <div class="fgrid" style="margin-top:20px;grid-template-columns:1fr 1fr 1fr">
-      <label class="f"><span>Дата</span><input type="text" id="pdate" inputmode="numeric" placeholder="ДД.ММ.ГГГГ" maxlength="10"></label>
+      <label class="f"><span>Дата</span>
+        <span style="position:relative;display:block">
+          <input type="text" id="pdate" inputmode="numeric" placeholder="ДД.ММ.ГГГГ" maxlength="10" style="padding-right:44px">
+          <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:17px;pointer-events:none">📅</span>
+          <input type="date" id="pdatePick" min="1800-01-01" max="2100-12-31" style="position:absolute;right:0;top:0;width:44px;height:100%;opacity:0;cursor:pointer;border:none;padding:0">
+        </span>
+      </label>
       <label class="f"><span>Время</span><input type="time" id="ptime"></label>
       <label class="f"><span>Часовой пояс</span><select id="ptz"></select></label>
     </div>
@@ -313,6 +330,21 @@
     <div class="err" id="perr"></div>
     <div class="pgrid" id="pgrid"></div>
     <p class="method" id="pfoot" style="display:none">Вара указана по календарным суткам выбранного пояса (классически отсчитывается от восхода Солнца). Титхи, накшатра, йога и карана — по точным положениям Солнца и Луны, сидерический зодиак, айанамша Лахири. Рекомендации дня — по материалам курса «Накшатры» Валерии Желамской, nakshatri.ru.</p>
+  </section>
+
+  <section class="panel" style="margin-top:26px">
+    <div class="eyerow"><span class="dash" style="width:32px"></span><p class="eyebrow">Справка</p></div>
+    <h2 style="font-family:var(--serif);font-weight:600;font-size:clamp(24px,3.6vw,30px);line-height:1.05;margin-top:12px">Что такое панчанга и как ей пользоваться</h2>
+    <p class="lede" style="margin-top:14px;font-size:15px;max-width:76ch">Панчанга в переводе означает «пять частей». Это пять качеств каждого дня: вара несёт энергию планеты, управляющей днём недели; титхи, лунный день, отражает отношения Солнца и Луны; накшатра задаёт главный характер дня по положению Луны; йога описывает тонкое соединение светил; карана, половина титхи, отвечает за практические дела.</p>
+    <p class="lede" style="margin-top:12px;font-size:15px;max-width:76ch">Как пользоваться: перед важным делом сверьте день. Главные показатели — накшатра и титхи: для новых начинаний выбирайте дни с благоприятной накшатрой и избегайте рикта-титхи, 14-х лунных суток и караны Вишти. Чем больше элементов дня поддерживают ваше дело, тем легче оно идёт. И наоборот: напряжённые дни хороши по-своему — для завершения, очищения и внутренней работы.</p>
+    <p class="lede" style="margin-top:12px;font-size:15px;max-width:76ch">Чем глубже вы сонастраиваетесь с ритмами Луны, тем больше опоры получаете в делах и состояниях.</p>
+    <div class="tg-banner">
+      <div>
+        <div class="tb-t">🌙 Лунный календарь на каждую неделю</div>
+        <div class="tb-s">Накшатры дня, лунные сутки и рекомендации от ведического астролога — бесплатно в Telegram-канале «Накшатры. Возвращение силы»</div>
+      </div>
+      <a class="tb-btn" href="https://t.me/nakshatri_ru" target="_blank" rel="noopener">Читать календарь в Telegram →</a>
+    </div>
   </section>
 
   <section class="info3">
@@ -1046,6 +1078,36 @@ pdateEl.addEventListener('input',()=>{
   if(v.length>4)out+='.'+v.slice(4,8);
   pdateEl.value=out;
 });
+/* календарик: выбор даты нативным пикером заполняет поле в нашем формате */
+document.getElementById('pdatePick').addEventListener('change',e=>{
+  const v=e.target.value;if(!v)return;
+  const[y,m,d]=v.split('-');
+  pdateEl.value=`${d}.${m}.${y}`;
+});
+
+/* ---- расшифровки элементов (классические значения панчанги) ---- */
+const VARA_INFO=[
+["g","День силы, здоровья и статуса: подходит для лидерских шагов, важных обращений и укрепления авторитета."],
+["g","День заботы и чувств: благоприятен для домашних дел, путешествий, начинаний и всего, что связано с семьёй."],
+["h","День силы и решимости: хорош для спорта, техники и смелых действий, но не подходит для новых начинаний и споров."],
+["g","День общения и интеллекта: благоприятен для обучения, торговли, переговоров и работы с документами."],
+["g","Самый благоприятный день недели: расширение, обучение, финансы, важные начинания и духовные дела."],
+["g","День любви и красоты: благоприятен для отношений, искусства, покупок и удовольствий."],
+["h","День дисциплины: подходит для рутины, наведения порядка и завершения дел, но не для новых начинаний."]];
+function tithiGroup(t){
+  const g=((t-1)%5)+1;
+  if(t===30)return["h","Амавасья завершает лунный месяц: время тишины и перезагрузки, не для начинаний."];
+  return[["g","Нанда-титхи, сутки радости: благоприятны для творчества, праздников и приятных дел."],
+  ["g","Бхадра-титхи, сутки блага: поддерживают начинания, здоровье и полезные дела."],
+  ["g","Джая-титхи, сутки победы: подходят для решительных шагов и преодоления препятствий."],
+  ["h","Рикта-титхи, «пустые» сутки: не для начинаний, хороши для завершения и очищения."],
+  ["g","Пурна-титхи, сутки полноты: благоприятны для завершения важных дел и торжеств."]][g-1];
+}
+const NAK_CHAR=["лёгкая","свирепая","смешанная","фиксированная","мягкая","острая","подвижная","лёгкая","острая","свирепая","свирепая","фиксированная","лёгкая","мягкая","подвижная","смешанная","мягкая","острая","острая","свирепая","фиксированная","подвижная","подвижная","подвижная","свирепая","фиксированная","мягкая"];
+const YOGA_D=[["h","препятствия в начале, опора после их преодоления"],["g","любовь и радость"],["g","здоровье и долголетие"],["g","удача и счастье"],["g","красота и блеск"],["h","препятствия и риски"],["g","благие дела и успех"],["g","устойчивость и выдержка, устранение препятствий"],["h","острота и конфликты"],["h","узлы и помехи"],["g","рост и приумножение"],["g","постоянство и прочный фундамент"],["h","удары и сбои планов"],["g","воодушевление и радость"],["h","жёсткость, риск травм"],["g","достижение целей и успех"],["h","резкие повороты, неустойчивость"],["g","комфорт и лёгкость"],["h","барьеры и ограничения"],["g","благословение и благо"],["g","реализация и совершенство"],["g","достижимость задуманного"],["g","благоприятность и свет"],["g","чистота и ясность"],["g","мудрость и духовный рост"],["g","власть и лидерство"],["h","раскол и напряжение"]];
+const KAR_D={"Бава":["g","начинания, здоровье и благие дела"],"Балава":["g","обучение и духовные дела"],"Каулава":["g","отношения, дружба и союзы"],"Тайтила":["g","дом, недвижимость и укрепление позиций"],"Гара":["g","хозяйство, ремесло и практичные дела"],"Ваниджа":["g","торговля, сделки и коммерция"],"Вишти":["h","Бхадра: не подходит для начинаний, время завершений"],"Шакуни":["h","тонкие дела и лечение, не для начинаний"],"Чатушпада":["h","почитание предков, не для начинаний"],"Нага":["h","завершение и отпускание, не для начинаний"],"Кимстугхна":["g","благие дела и ритуалы"]};
+const rate=(arr,word)=>`<div class="prate ${arr[0]}">${arr[0]==='g'?'Благоприятн':'Напряжённ'}${word}</div>`;
+
 /* селект пояса + дефолты (текущие дата и время устройства) */
 (function(){
   const sel=document.getElementById('ptz');
@@ -1088,13 +1150,20 @@ document.getElementById('pcalc').addEventListener('click',()=>{
   const nextTithi=tithiName(tithi%30+1),nextNak=NAK[(nk.i+1)%27],nextYoga=YOGA27[yoga%27],nextKar=karanaName((kar+1)%60);
 
   const tnote=tithiNote(tithi);
+  const varaIdx=new Date(Date.UTC(y,mo-1,d)).getUTCDay();
+  const VARA_INS=["Солнцем","Луной","Марсом","Меркурием","Юпитером","Венерой","Сатурном"];
+  const vinfo=VARA_INFO[varaIdx];
+  const tgrp=tithiGroup(tithi);
+  const yinfo=YOGA_D[yoga-1];
+  const kname=karanaName(kar);
+  const kinfo=KAR_D[kname];
   document.getElementById('pgrid').innerHTML=
     `<div class="pblock pwide"><div class="pl">Энергия дня · накшатра ${NAK[nk.i]}</div><div class="ps" style="margin-top:8px;font-size:14.5px">${NAKDAY[nk.i].t}<br><b>👉 ${NAKDAY[nk.i].tip}</b></div></div>`+
-    `<div class="pblock"><div class="pl">Вара · день недели</div><div class="pv">${vara[0]}</div><div class="ps">день <b>${vara[1]}</b></div></div>`+
-    `<div class="pblock"><div class="pl">Титхи · лунный день</div><div class="pv">${tithiName(tithi)}</div><div class="ps">${tithi<=15?tithi:tithi-15}-я титхи · ${paksha}<br>до <b>${F(tTithi)}</b>, далее ${nextTithi}${tnote?`<br><b>${tnote}</b>`:''}</div></div>`+
-    `<div class="pblock"><div class="pl">Накшатра Луны</div><div class="pv">${NAK[nk.i]}</div><div class="ps">пада ${nk.pada} · Луна в знаке <b>${moonSign}</b><br>до <b>${F(tNak)}</b>, далее ${nextNak}</div></div>`+
-    `<div class="pblock"><div class="pl">Йога</div><div class="pv">${YOGA27[yoga-1]}</div><div class="ps">${yoga}-я из 27<br>до <b>${F(tYoga)}</b>, далее ${nextYoga}</div></div>`+
-    `<div class="pblock"><div class="pl">Карана</div><div class="pv">${karanaName(kar)}</div><div class="ps">половина титхи${karanaName(kar)==='Вишти'?' · <b>Вишти (Бхадра)</b>, не подходит для начинаний':''}<br>до <b>${F(tKar)}</b>, далее ${nextKar}</div></div>`+
+    `<div class="pblock"><div class="pl">Вара · день недели</div><div class="pv">${vara[0]}</div>${rate(vinfo,'ый день, управляемый '+VARA_INS[varaIdx])}<div class="ps">${vinfo[1]}</div></div>`+
+    `<div class="pblock"><div class="pl">Титхи · лунный день</div><div class="pv">${tithiName(tithi)}</div>${rate(tgrp,'ые лунные сутки')}<div class="ps">${tithi<=15?tithi:tithi-15}-я титхи · ${paksha}<br>${tgrp[1]}${tnote?`<br><b>${tnote}</b>`:''}<br>до <b>${F(tTithi)}</b>, далее ${nextTithi}</div></div>`+
+    `<div class="pblock"><div class="pl">Накшатра Луны</div><div class="pv">${NAK[nk.i]}</div><div class="prate g">Характер накшатры: ${NAK_CHAR[nk.i]}</div><div class="ps">пада ${nk.pada} · Луна в знаке <b>${moonSign}</b><br>до <b>${F(tNak)}</b>, далее ${nextNak}</div></div>`+
+    `<div class="pblock"><div class="pl">Йога</div><div class="pv">${YOGA27[yoga-1]}</div>${rate(yinfo,'ая йога')}<div class="ps">${yinfo[1]}<br>${yoga}-я из 27 · до <b>${F(tYoga)}</b>, далее ${nextYoga}</div></div>`+
+    `<div class="pblock"><div class="pl">Карана</div><div class="pv">${kname}</div>${rate(kinfo,'ая карана')}<div class="ps">${kinfo[1]}<br>до <b>${F(tKar)}</b>, далее ${nextKar}</div></div>`+
     `<div class="pblock"><div class="pl">Момент расчёта</div><div class="pv">${String(d).padStart(2,'0')}.${String(mo).padStart(2,'0')}.${y}</div><div class="ps">${tv} · UTC${offMin>=0?'+':''}${offMin%60===0?offMin/60:(offMin/60).toFixed(2)}</div></div>`;
   document.getElementById('pfoot').style.display='block';
   if(typeof reportHeight==='function')try{reportHeight();}catch(e){}
