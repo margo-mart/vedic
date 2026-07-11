@@ -30,6 +30,7 @@
     --serif:"Cormorant Infant",Georgia,serif;
     --sans:"Onest",system-ui,sans-serif;
   }
+  .gtxt{background:linear-gradient(90deg,#e8b23a 0%,#c99a3f 50%,#8f6a28 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
   body{
@@ -40,12 +41,23 @@
   .wrap{max-width:1120px;margin:0 auto;padding:clamp(30px,5vw,64px) clamp(18px,4vw,40px) 80px}
 
   .eyerow{display:flex;align-items:center;gap:12px}
-  .eyerow span.dash{height:1px;width:40px;background:var(--gold)}
-  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:var(--ink-faint)}
+  .eyerow span.dash{height:1px;width:40px;background:linear-gradient(90deg,#e8b23a,#8f6a28)}
+  .eyebrow{font-size:11px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;background:linear-gradient(90deg,#e8b23a 0%,#c99a3f 50%,#8f6a28 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
   h1{font-family:var(--serif);font-weight:600;font-size:clamp(40px,6.4vw,64px);line-height:.98;margin-top:18px}
   .lede{color:var(--ink-soft);max-width:46ch;margin-top:18px;font-size:16px}
 
   .hero{display:grid;gap:36px;align-items:center}
+  .hero header{position:relative}
+  .hero header::before{content:'';position:absolute;top:-24px;right:-10px;width:300px;height:220px;pointer-events:none;z-index:0;
+    background-image:radial-gradient(1.6px 1.6px at 12% 18%, rgba(168,132,44,.55) 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 42% 8%, rgba(168,132,44,.4) 50%, transparent 51%),
+      radial-gradient(1.8px 1.8px at 72% 22%, rgba(168,132,44,.5) 50%, transparent 51%),
+      radial-gradient(1px 1px at 28% 40%, rgba(168,132,44,.35) 50%, transparent 51%),
+      radial-gradient(1.4px 1.4px at 88% 48%, rgba(168,132,44,.4) 50%, transparent 51%),
+      radial-gradient(1px 1px at 8% 62%, rgba(168,132,44,.3) 50%, transparent 51%),
+      radial-gradient(1.6px 1.6px at 58% 68%, rgba(168,132,44,.35) 50%, transparent 51%),
+      radial-gradient(1px 1px at 95% 10%, rgba(168,132,44,.3) 50%, transparent 51%);}
+  .hero header>*{position:relative;z-index:1}
   @media(min-width:960px){.hero{grid-template-columns:minmax(0,1fr) minmax(400px,470px);gap:56px}}
 
   /* ---------- форма ---------- */
@@ -137,7 +149,8 @@
   .ncard .role{font-size:11px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--terra)}
   .ncard h3{font-family:var(--serif);font-weight:600;font-size:2.2rem;line-height:.98;margin-top:7px}
   .ncard .badge-num{float:right;position:relative;display:flex;height:56px;width:56px;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;
-    border:1px solid var(--line-strong);background:var(--card-soft);color:var(--gold);font-family:var(--serif);font-weight:600;font-size:18px}
+    border:2px solid var(--gold);background:var(--card-soft);color:var(--gold);font-family:var(--serif);font-weight:600;font-size:18px;
+    box-shadow:0 0 0 3px var(--card),0 0 0 4.5px rgba(168,132,44,.4)}
   .ncard .badge-num img.nak-ic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
   .ncard dl{margin-top:16px;border-top:1px solid var(--line);font-size:14px}
   .ncard dl div{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line)}
@@ -239,7 +252,7 @@
   .info3{display:grid;gap:18px;margin-top:56px}
   @media(min-width:820px){.info3{grid-template-columns:1fr 1fr 1fr}}
   .icard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px}
-  .icard .num{font-family:var(--serif);font-weight:600;font-size:30px;color:var(--gold);line-height:1}
+  .icard .num{font-family:var(--serif);font-weight:600;font-size:30px;line-height:1;background:linear-gradient(90deg,#e8b23a 0%,#c99a3f 50%,#8f6a28 100%);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
   .icard h4{font-size:15px;font-weight:600;margin-top:12px}
   .icard p{font-size:14.5px;line-height:1.6;color:var(--ink-soft);margin-top:8px}
 
@@ -265,11 +278,31 @@
     text-decoration:none;font-weight:600;font-size:14px;padding:13px 22px;border-radius:10px;
     box-shadow:0 10px 24px rgba(176,81,44,.24);transition:background .2s;white-space:nowrap}
   .tg-banner a.tb-btn:hover{background:var(--terra-deep)}
+
+  .brand-foot{margin-top:56px;border-radius:20px;padding:clamp(32px,5vw,52px);text-align:center;position:relative;overflow:hidden;
+    background:linear-gradient(160deg,#1c2c4e 0%,#152241 55%,#0c1830 100%)}
+  .brand-foot::before{content:'';position:absolute;inset:0;pointer-events:none;
+    background-image:radial-gradient(1.5px 1.5px at 20% 30%, rgba(232,178,58,.55) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 70% 20%, rgba(232,178,58,.45) 50%, transparent 51%),
+      radial-gradient(1px 1px at 40% 70%, rgba(232,178,58,.4) 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 85% 65%, rgba(232,178,58,.45) 50%, transparent 51%),
+      radial-gradient(1px 1px at 60% 85%, rgba(232,178,58,.35) 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 12% 80%, rgba(232,178,58,.4) 50%, transparent 51%),
+      radial-gradient(1px 1px at 92% 35%, rgba(232,178,58,.35) 50%, transparent 51%),
+      radial-gradient(1.3px 1.3px at 25% 55%, rgba(232,178,58,.3) 50%, transparent 51%),
+      radial-gradient(1px 1px at 78% 88%, rgba(232,178,58,.3) 50%, transparent 51%)}
+  .bf-logo{position:relative;font-family:var(--serif);font-weight:600;font-size:clamp(24px,3.6vw,32px);
+    background:linear-gradient(90deg,#f5d879 0%,#fff3d6 50%,#d9a559 100%);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.02em}
+  .bf-logo span{-webkit-text-fill-color:#8a7a63;color:#8a7a63}
+  .bf-text{position:relative;margin-top:12px;font-size:14.5px;color:#b8a688;max-width:52ch;margin-left:auto;margin-right:auto;line-height:1.6}
+  .bf-links{position:relative;margin-top:22px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .bf-links a{color:#f5d879;font-size:14px;font-weight:600;text-decoration:none;border:1px solid rgba(217,165,89,.45);border-radius:999px;padding:10px 20px;transition:background .2s,border-color .2s;display:inline-block}
+  .bf-links a:hover{background:rgba(217,165,89,.14);border-color:#d9a559}
   .author-card{display:flex;gap:22px;align-items:center;margin-top:24px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 28px;box-shadow:0 14px 40px rgba(60,45,20,.08)}
   @media(max-width:600px){.author-card{flex-direction:column;text-align:center}}
   .author-photo-wrap{position:relative;width:88px;height:88px;flex-shrink:0}
-  .author-initials{position:absolute;inset:0;border-radius:50%;background:var(--card-soft);border:1px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600;font-size:24px;color:var(--gold)}
-  .author-photo{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover;border:1.5px solid var(--gold)}
+  .author-initials{position:absolute;inset:0;border-radius:50%;background:var(--card-soft);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:600;font-size:24px;color:var(--gold);box-shadow:0 0 0 3px var(--card),0 0 0 4.5px rgba(168,132,44,.4)}
+  .author-photo{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover;border:2px solid var(--gold);box-shadow:0 0 0 3px var(--card),0 0 0 4.5px rgba(168,132,44,.4)}
   .author-quote{font-family:var(--serif);font-style:italic;font-weight:500;font-size:20px;line-height:1.42;color:var(--ink)}
   .author-quote::before{content:'\201C'} .author-quote::after{content:'\201D'}
   .author-meta{margin-top:12px;font-size:13.5px;line-height:1.55;color:var(--ink-soft)}
@@ -281,12 +314,12 @@
 <div class="wrap">
   <nav class="topnav">
     <a href="#formCard">Рассчитать карту</a>
-    <a href="#panchanga">Панчанга</a>
+    <a href="#panchanga">Энергии дня</a>
   </nav>
   <section class="hero">
     <header>
       <div class="eyerow"><span class="dash"></span><p class="eyebrow">Ведическая астрология · Накшатры</p></div>
-      <h1>Калькулятор накшатр по дате рождения</h1>
+      <h1>Калькулятор <span class="gtxt">накшатр</span> по дате рождения</h1>
       <p class="lede">Введите дату, точное время и город рождения — и получите полную карту джйотиш: девять грах с накшатрами и падами, дома, лагну и периоды Вимшоттари Даши.</p>
     </header>
 
@@ -322,7 +355,7 @@
     <div class="res-head">
       <div>
         <div class="eyerow"><span class="dash" style="width:32px"></span><p class="eyebrow">Результат</p></div>
-        <h2>Ваша натальная карта</h2>
+        <h2>Ваша <span class="gtxt">натальная</span> карта</h2>
         <p class="res-sub" id="birthLine"></p>
       </div>
       <button class="edit-btn" id="editBtn">✎ Изменить данные</button>
@@ -382,7 +415,7 @@
         <div class="pleg h"><i></i><span><b>Напряжённый</b> — не начинайте новое, займитесь текущими делами</span></div>
         <div class="pleg j"><i></i><span><b>Джанма</b> — ваш личный день, тара рождения: побудьте бережнее к себе</span></div>
       </div>
-      <p class="pcal-note">Накшатра дня указана на полдень в поясе места рождения; точное время её смены смотрите в <a href="#panchanga">панчанге</a>.</p>
+      <p class="pcal-note">Накшатра дня указана на полдень в поясе места рождения; точное время её смены смотрите в разделе <a href="#panchanga">«Энергии дня»</a>.</p>
     </div>
 
     <div class="sec">
@@ -395,8 +428,8 @@
   </section>
 
   <section class="panel" id="panchanga" style="margin-top:56px">
-    <div class="eyerow"><span class="dash" style="width:32px"></span><p class="eyebrow">Панчанга · пять элементов дня</p></div>
-    <h2 style="font-family:var(--serif);font-weight:600;font-size:clamp(26px,4vw,34px);line-height:1.05;margin-top:12px">Ведический календарь на дату</h2>
+    <div class="eyerow"><span class="dash" style="width:32px"></span><p class="eyebrow">Энергии дня · пять элементов панчанги</p></div>
+    <h2 style="font-family:var(--serif);font-weight:600;font-size:clamp(26px,4vw,34px);line-height:1.05;margin-top:12px"><span class="gtxt">Ведический</span> календарь на дату</h2>
     <p class="lede" style="margin-top:12px;font-size:15px;max-width:64ch">Панчанга — система пяти элементов времени в джйотиш: вара, титхи, накшатра, йога и карана. По ним подбирают благоприятное время для дел (мухурта). По умолчанию показано текущее время, можно рассчитать любую дату.</p>
     <div class="fgrid" style="margin-top:20px;grid-template-columns:1fr 1fr 1fr">
       <label class="f"><span>Дата</span>
@@ -449,6 +482,15 @@
     <article class="icard"><p class="num">01</p><h4>Что такое накшатры</h4><p>Накшатры — это 27 лунных стоянок в ведической астрологии. Они показывают более тонкий психологический и событийный слой, чем один только знак зодиака.</p></article>
     <article class="icard"><p class="num">02</p><h4>Почему нужно точное время</h4><p>Лагна и дома быстро смещаются. Даже небольшая ошибка по времени может изменить восходящий знак, паду и дом, а значит и ключевую накшатра-картину.</p></article>
     <article class="icard"><p class="num">03</p><h4>Как мы считаем</h4><p>Используется сидерический зодиак, режим джйотиш, айанамша Лахири, целознаковые дома и истинный узел (Раху/Кету). Расчёт детерминированный, астрономический, без генеративной интерпретации — точность сверена со Swiss Ephemeris.</p></article>
+  </section>
+
+  <section class="brand-foot">
+    <div class="bf-logo">накшатры <span>·</span> возвращение силы</div>
+    <p class="bf-text">Ведическая астрология, лунные календари и гид по накшатрам от астролога Валерии Желамской</p>
+    <div class="bf-links">
+      <a href="https://t.me/nakshatri_ru" target="_blank" rel="noopener">Telegram-канал →</a>
+      <a href="https://nakshatri.ru" target="_blank" rel="noopener">nakshatri.ru →</a>
+    </div>
   </section>
 </div>
 
@@ -1156,29 +1198,62 @@ document.getElementById('saveCard').addEventListener('click',()=>{
   const c=window._lastChart;if(!c)return;
   const W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;
   const x=cv.getContext('2d');
-  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,'#f8f2e3');g.addColorStop(1,'#efe0c6');
-  x.fillStyle=g;x.fillRect(0,0,W,H);
-  x.strokeStyle='#a8842c';x.lineWidth=3;x.strokeRect(40,40,W-80,H-80);
-  function txt(t,y,f,col){x.fillStyle=col;x.font=f;x.textAlign='center';x.fillText(t,W/2,y);}
+  const cx=W/2,cy=430,R=175;
+
+  /* фон — глубокое ночное небо, в стиле бренда */
+  const bg=x.createLinearGradient(0,0,W*0.15,H);
+  bg.addColorStop(0,'#1c2c4e');bg.addColorStop(.55,'#152241');bg.addColorStop(1,'#0c1830');
+  x.fillStyle=bg;x.fillRect(0,0,W,H);
+
+  /* россыпь звёзд вокруг */
+  let seed=42;const rnd=()=>{seed=(seed*9301+49297)%233280;return seed/233280;};
+  for(let i=0;i<90;i++){
+    const sx=rnd()*W, sy=rnd()*H, r=rnd()*1.6+.3, op=rnd()*.55+.15;
+    if(Math.hypot(sx-cx,sy-cy)<R+70)continue;
+    x.fillStyle='rgba(245,216,121,'+op+')';x.beginPath();x.arc(sx,sy,r,0,7);x.fill();
+  }
+
+  /* золотая двойная рамка */
+  const goldEdge=x.createLinearGradient(0,0,W,0);
+  goldEdge.addColorStop(0,'#f5d879');goldEdge.addColorStop(.5,'#d9a559');goldEdge.addColorStop(1,'#9a6d36');
+  x.strokeStyle=goldEdge;x.lineWidth=2;x.strokeRect(34,34,W-68,H-68);
+  x.strokeStyle='rgba(217,165,89,.5)';x.lineWidth=1;x.strokeRect(46,46,W-92,H-92);
+
+  function goldGrad(){const gr=x.createLinearGradient(cx-280,0,cx+280,0);
+    gr.addColorStop(0,'#f5d879');gr.addColorStop(.5,'#fff3d6');gr.addColorStop(1,'#d9a559');return gr;}
+  function txt(t,y,f,col){x.fillStyle=col;x.font=f;x.textAlign='center';x.fillText(t,cx,y);}
   function wrap(t,y,f,col,maxW,lh){x.font=f;x.fillStyle=col;x.textAlign='center';
     const words=t.split(' ');let line='',yy=y;
     for(const w of words){const test=line?line+' '+w:w;
-      if(x.measureText(test).width>maxW&&line){x.fillText(line,W/2,yy);line=w;yy+=lh;}else line=test;}
-    if(line)x.fillText(line,W/2,yy);return yy;}
+      if(x.measureText(test).width>maxW&&line){x.fillText(line,cx,yy);line=w;yy+=lh;}else line=test;}
+    if(line)x.fillText(line,cx,yy);return yy;}
+  function diamond(y){x.save();x.translate(cx,y);x.rotate(Math.PI/4);x.fillStyle='#d9a559';x.fillRect(-5,-5,10,10);x.restore();}
+
   function finish(){
-    txt('М О Я   Н А К Ш А Т Р А   Л У Н Ы',180,'600 30px Onest, Arial','#6f6353');
-    txt(NAK[c.nakI],640,'600 110px "Cormorant Infant", Georgia','#2c2419');
-    txt('пада '+c.pada+' · Луна в знаке '+c.sign+' · '+(c.nakI+1)+' из 27',710,'400 32px Onest, Arial','#6f6353');
-    wrap(NAKD[c.nakI].key,810,'italic 500 40px "Cormorant Infant", Georgia','#96431f',W-260,56);
-    txt('н а к ш а т р ы  ·  в о з в р а щ е н и е   с и л ы',H-160,'600 26px Onest, Arial','#a8842c');
-    txt('бесплатный калькулятор накшатр · nakshatri.ru',H-110,'400 28px Onest, Arial','#6f6353');
+    txt('М О Я   Н А К Ш А Т Р А   Л У Н Ы',150,'600 26px Onest, Arial','#e3c88a');
+    x.fillStyle=goldGrad();x.font='600 108px "Cormorant Infant", Georgia';x.textAlign='center';x.fillText(NAK[c.nakI],cx,745);
+    txt('пада '+c.pada+' · Луна в знаке '+c.sign+' · '+(c.nakI+1)+' из 27',830,'400 30px Onest, Arial','#b8a688');
+    diamond(880);
+    wrap(NAKD[c.nakI].key,945,'italic 500 38px "Cormorant Infant", Georgia','#e7c98f',W-280,54);
+    x.strokeStyle='rgba(217,165,89,.35)';x.lineWidth=1;x.beginPath();x.moveTo(cx-90,H-205);x.lineTo(cx+90,H-205);x.stroke();
+    txt('н а к ш а т р ы  ·  в о з в р а щ е н и е   с и л ы',H-160,'600 24px Onest, Arial','#d9a559');
+    txt('бесплатный калькулятор накшатр · nakshatri.ru',H-112,'400 26px Onest, Arial','#8a7a63');
     const a=document.createElement('a');a.download='накшатра-'+NAK[c.nakI]+'.png';a.href=cv.toDataURL('image/png');a.click();
   }
   const img=new Image();
-  img.onload=()=>{const R=170,cx=W/2,cy=350;x.save();x.beginPath();x.arc(cx,cy,R,0,7);x.clip();x.drawImage(img,cx-R,cy-R,2*R,2*R);x.restore();
-    x.beginPath();x.arc(cx,cy,R,0,7);x.strokeStyle='#a8842c';x.lineWidth=4;x.stroke();finish();};
-  img.onerror=()=>{const R=170,cx=W/2,cy=350;x.beginPath();x.arc(cx,cy,R,0,7);x.fillStyle='#f3ecdb';x.fill();x.strokeStyle='#a8842c';x.lineWidth=4;x.stroke();
-    txt(String(c.nakI+1),cy+40,'600 120px "Cormorant Infant", Georgia','#a8842c');finish();};
+  img.onload=()=>{
+    x.save();x.beginPath();x.arc(cx,cy,R,0,7);x.clip();x.drawImage(img,cx-R,cy-R,2*R,2*R);x.restore();
+    x.beginPath();x.arc(cx,cy,R+10,0,7);x.strokeStyle='rgba(217,165,89,.55)';x.lineWidth=1.5;x.stroke();
+    x.beginPath();x.arc(cx,cy,R,0,7);x.strokeStyle=goldEdge;x.lineWidth=5;x.stroke();
+    finish();
+  };
+  img.onerror=()=>{
+    x.beginPath();x.arc(cx,cy,R,0,7);x.fillStyle='#1f3155';x.fill();
+    x.beginPath();x.arc(cx,cy,R+10,0,7);x.strokeStyle='rgba(217,165,89,.55)';x.lineWidth=1.5;x.stroke();
+    x.beginPath();x.arc(cx,cy,R,0,7);x.strokeStyle=goldEdge;x.lineWidth=5;x.stroke();
+    x.fillStyle=goldGrad();x.font='600 118px "Cormorant Infant", Georgia';x.textAlign='center';x.fillText(String(c.nakI+1),cx,cy+42);
+    finish();
+  };
   img.src='icons/'+(c.nakI+1)+'.png';
 });
 
@@ -1385,10 +1460,13 @@ document.getElementById('pcalc').addEventListener('click',()=>{
   const kname=karanaName(kar);
   const kinfo=KAR_D[kname];
   document.getElementById('pgrid').innerHTML=
+    `<div class="pblock pwide" style="display:flex;gap:16px;align-items:flex-start">`+
+      `<span class="badge-num" style="flex-shrink:0"><img class="nak-ic" src="icons/${nk.i+1}.png" alt="" onerror="this.style.display='none'"><span class="bn">${nk.i+1}<span style="font-size:11px;color:var(--ink-faint)">/27</span></span></span>`+
+      `<div style="flex:1;min-width:0"><div class="pl">Накшатра дня</div><div class="pv">${NAK[nk.i]}</div><div class="prate g">Характер накшатры: ${NAK_CHAR[nk.i]}</div><div class="ps">пада ${nk.pada} · Луна в знаке <b>${moonSign}</b><br>до <b>${F(tNak)}</b>, далее ${nextNak}</div></div>`+
+    `</div>`+
     `<div class="pblock pwide"><div class="pl">Энергия дня · накшатра ${NAK[nk.i]}</div><div class="ps" style="margin-top:8px;font-size:15.5px;line-height:1.6">${NAKDAY[nk.i].t}<br><b>👉 ${NAKDAY[nk.i].tip}</b></div></div>`+
     `<div class="pblock"><div class="pl">Вара · день недели</div><div class="pv">${vara[0]}</div>${rate(vinfo,'ый день, управляемый '+VARA_INS[varaIdx])}<div class="ps">${vinfo[1]}</div></div>`+
     `<div class="pblock"><div class="pl">Титхи · лунный день</div><div class="pv">${tithiName(tithi)}</div>${rate(tgrp,'ые лунные сутки')}<div class="ps">${tithi<=15?tithi:tithi-15}-я титхи · ${paksha}<br>${tgrp[1]}${tnote?`<br><b>${tnote}</b>`:''}<br>до <b>${F(tTithi)}</b>, далее ${nextTithi}</div></div>`+
-    `<div class="pblock"><div class="pl">Накшатра Луны</div><div class="pv">${NAK[nk.i]}</div><div class="prate g">Характер накшатры: ${NAK_CHAR[nk.i]}</div><div class="ps">пада ${nk.pada} · Луна в знаке <b>${moonSign}</b><br>до <b>${F(tNak)}</b>, далее ${nextNak}</div></div>`+
     `<div class="pblock"><div class="pl">Йога</div><div class="pv">${YOGA27[yoga-1]}</div>${rate(yinfo,'ая йога')}<div class="ps">${yinfo[1]}<br>${yoga}-я из 27 · до <b>${F(tYoga)}</b>, далее ${nextYoga}</div></div>`+
     `<div class="pblock"><div class="pl">Карана</div><div class="pv">${kname}</div>${rate(kinfo,'ая карана')}<div class="ps">${kinfo[1]}<br>до <b>${F(tKar)}</b>, далее ${nextKar}</div></div>`+
     `<div class="pblock"><div class="pl">Момент расчёта</div><div class="pv">${String(d).padStart(2,'0')}.${String(mo).padStart(2,'0')}.${y}</div><div class="ps">${tv} · UTC${offMin>=0?'+':''}${offMin%60===0?offMin/60:(offMin/60).toFixed(2)}</div></div>`+
