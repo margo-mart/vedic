@@ -148,10 +148,11 @@
   .ncard{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 14px 44px rgba(60,45,20,.08)}
   .ncard .role{font-size:11px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--terra)}
   .ncard h3{font-family:var(--serif);font-weight:600;font-size:2.2rem;line-height:.98;margin-top:7px}
-  .ncard .badge-num{float:right;position:relative;display:flex;height:56px;width:56px;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;
+  .badge-num{position:relative;display:flex;height:56px;width:56px;flex-shrink:0;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;
     border:2px solid var(--gold);background:var(--card-soft);color:var(--gold);font-family:var(--serif);font-weight:600;font-size:18px;
     box-shadow:0 0 0 3px var(--card),0 0 0 4.5px rgba(168,132,44,.4)}
-  .ncard .badge-num img.nak-ic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+  .ncard .badge-num{float:right}
+  .badge-num img.nak-ic{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
   .ncard dl{margin-top:16px;border-top:1px solid var(--line);font-size:14px}
   .ncard dl div{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line)}
   .ncard dl div:last-child{border-bottom:none}
@@ -1460,11 +1461,13 @@ document.getElementById('pcalc').addEventListener('click',()=>{
   const kname=karanaName(kar);
   const kinfo=KAR_D[kname];
   document.getElementById('pgrid').innerHTML=
-    `<div class="pblock pwide" style="display:flex;gap:16px;align-items:flex-start">`+
-      `<span class="badge-num" style="flex-shrink:0"><img class="nak-ic" src="icons/${nk.i+1}.png" alt="" onerror="this.style.display='none'"><span class="bn">${nk.i+1}<span style="font-size:11px;color:var(--ink-faint)">/27</span></span></span>`+
-      `<div style="flex:1;min-width:0"><div class="pl">Накшатра дня</div><div class="pv">${NAK[nk.i]}</div><div class="prate g">Характер накшатры: ${NAK_CHAR[nk.i]}</div><div class="ps">пада ${nk.pada} · Луна в знаке <b>${moonSign}</b><br>до <b>${F(tNak)}</b>, далее ${nextNak}</div></div>`+
+    `<div class="pblock pwide">`+
+      `<div style="display:flex;gap:16px;align-items:flex-start">`+
+        `<span class="badge-num" style="flex-shrink:0"><img class="nak-ic" src="icons/${nk.i+1}.png" alt="" onerror="this.style.display='none'"><span class="bn">${nk.i+1}<span style="font-size:11px;color:var(--ink-faint)">/27</span></span></span>`+
+        `<div style="flex:1;min-width:0"><div class="pl">Накшатра дня</div><div class="pv">${NAK[nk.i]}</div><div class="prate g">Характер накшатры: ${NAK_CHAR[nk.i]}</div><div class="ps">пада ${nk.pada} · Луна в знаке <b>${moonSign}</b><br>до <b>${F(tNak)}</b>, далее ${nextNak}</div></div>`+
+      `</div>`+
+      `<div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(168,132,44,.25)"><div class="pl">Энергия дня</div><div class="ps" style="margin-top:8px;font-size:15.5px;line-height:1.6">${NAKDAY[nk.i].t}<br><b>👉 ${NAKDAY[nk.i].tip}</b></div></div>`+
     `</div>`+
-    `<div class="pblock pwide"><div class="pl">Энергия дня · накшатра ${NAK[nk.i]}</div><div class="ps" style="margin-top:8px;font-size:15.5px;line-height:1.6">${NAKDAY[nk.i].t}<br><b>👉 ${NAKDAY[nk.i].tip}</b></div></div>`+
     `<div class="pblock"><div class="pl">Вара · день недели</div><div class="pv">${vara[0]}</div>${rate(vinfo,'ый день, управляемый '+VARA_INS[varaIdx])}<div class="ps">${vinfo[1]}</div></div>`+
     `<div class="pblock"><div class="pl">Титхи · лунный день</div><div class="pv">${tithiName(tithi)}</div>${rate(tgrp,'ые лунные сутки')}<div class="ps">${tithi<=15?tithi:tithi-15}-я титхи · ${paksha}<br>${tgrp[1]}${tnote?`<br><b>${tnote}</b>`:''}<br>до <b>${F(tTithi)}</b>, далее ${nextTithi}</div></div>`+
     `<div class="pblock"><div class="pl">Йога</div><div class="pv">${YOGA27[yoga-1]}</div>${rate(yinfo,'ая йога')}<div class="ps">${yinfo[1]}<br>${yoga}-я из 27 · до <b>${F(tYoga)}</b>, далее ${nextYoga}</div></div>`+
