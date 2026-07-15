@@ -358,6 +358,10 @@
 .kt-list li{position:relative;padding:7px 0 7px 24px;font-size:14px;line-height:1.5;border-bottom:1px dashed var(--line)}
 .kt-list li:last-child{border-bottom:none}
 .kt-list li::before{content:'→';position:absolute;left:2px;top:7px;color:var(--gold);font-weight:700}
+.khouse{margin-top:14px;border-color:var(--sage);background:linear-gradient(135deg,rgba(92,122,82,.07),rgba(92,122,82,.04))}
+.khouse .kt-title{color:var(--sage-deep)}
+.kh-task{font-size:13.5px;color:var(--ink-soft);margin:6px 0 2px;line-height:1.5}
+.khouse .kt-list li::before{color:var(--sage)}
 .ksyn{margin-top:16px}
 .ksyn p{font-size:14.5px;line-height:1.65;margin-top:9px;color:var(--ink)}
 .ks-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-top:0}
@@ -409,6 +413,28 @@ table.tt{width:100%;border-collapse:collapse;font-size:14px}
 @media(max-width:620px){.tt th:nth-child(3),.tt td:nth-child(3){display:none}}
 .method{font-size:11.5px;color:var(--ink-faint);margin-top:14px;line-height:1.6}
 .sec .lede2{font-size:14px;color:var(--ink-soft);margin-top:8px;max-width:70ch;line-height:1.6}
+/* натальная карта: директ/ретро тоном, без отдельного цвета */
+.n-pl.retro{fill:var(--ink-soft) !important;font-weight:500 !important}
+.chart-solo{display:block}
+.chart-solo .north{max-width:420px;margin:0 auto;display:block}
+/* переходы с ленты жизни к разделам */
+.tl-jump{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.tl-jump-lab{font-size:12.5px;color:var(--ink-faint)}
+.tl-jump button{border:1px solid var(--line-strong);background:#fff;border-radius:999px;padding:7px 14px;font-size:13px;font-weight:600;color:var(--terra);cursor:pointer;transition:all .15s}
+.tl-jump button:hover{background:var(--terra);border-color:var(--terra);color:#fdf6e9}
+/* группировка тем */
+.group-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:34px 2px 4px}
+/* раскрывающиеся карточки */
+.coll{border:1px solid var(--line);border-radius:16px;background:#fff;margin-top:12px;overflow:hidden}
+.coll-head{all:unset;box-sizing:border-box;display:flex;justify-content:space-between;align-items:center;gap:16px;width:100%;padding:18px 22px;cursor:pointer}
+.coll-head-l{min-width:0}
+.coll-eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.coll-title{font-family:var(--serif);font-size:22px;font-weight:600;margin-top:3px;color:var(--ink)}
+.coll-teaser{font-size:13px;color:var(--ink-soft);margin-top:5px}
+.coll-chev{font-size:20px;line-height:1;color:var(--ink-faint);flex-shrink:0;transition:transform .2s ease}
+.coll.open .coll-chev{transform:rotate(180deg)}
+.coll-body{display:none;padding:0 22px 24px;border-top:1px solid var(--line)}
+.coll.open .coll-body{display:block;padding-top:18px;animation:fadein .25s ease}
 </style>
 </head>
 <body>
@@ -472,14 +498,13 @@ table.tt{width:100%;border-collapse:collapse;font-size:14px}
 
     <div class="sec">
       <div class="sec-head">
-        <div><p class="sec-eyebrow">Раши-чакра D1</p><p class="sec-title">Натальная карта и опорные точки</p></div>
+        <div><p class="sec-eyebrow">Раши-чакра D1</p><p class="sec-title">Натальная карта</p></div>
       </div>
-      <div class="chart-flex">
+      <div class="chart-flex chart-solo">
         <div>
           <svg class="north" id="north" viewBox="0 0 400 400" role="img" aria-label="Натальная карта в северном индийском стиле"></svg>
-          <div class="legend">дома отсчитаны от лагны · числа — знаки (1 Овен … 12 Рыбы) · <i>терракотовым</i> отмечены ретроградные грахи</div>
+          <div class="legend">дома отсчитаны от лагны · числа — знаки (1 Овен … 12 Рыбы) · тёмным — планеты в прямом движении, светлым — ретроградные</div>
         </div>
-        <div class="keyfacts" id="keyfacts"></div>
       </div>
     </div>
 
@@ -494,55 +519,87 @@ table.tt{width:100%;border-collapse:collapse;font-size:14px}
         <span class="lg-dot"><i></i>точное соединение</span>
         <span class="lg-hint">наведите на полосу — покажет точные даты</span>
       </div>
+      <div class="tl-jump">
+        <span class="tl-jump-lab">Точные периоды — в разделах ниже:</span>
+        <button type="button" data-target="secSade">Саде Сати →</button>
+        <button type="button" data-target="secSatRet">Возврат Сатурна →</button>
+        <button type="button" data-target="secNodes">Раху–Кету →</button>
+      </div>
     </div>
 
+    <p class="group-title">Важные транзиты жизни</p>
 
-    <div class="sec">
-      <div class="sec-head">
-        <div><p class="sec-eyebrow">Ось кармических задач</p><p class="sec-title">Кармические задачи. Раху–Кету</p></div>
+    <div class="coll" id="secSade">
+      <button type="button" class="coll-head" aria-expanded="false">
+        <div class="coll-head-l">
+          <p class="coll-eyebrow">Транзит Сатурна от Луны</p>
+          <p class="coll-title">Саде Сати</p>
+          <p class="coll-teaser" id="sadeTeaser">Период важных жизненных уроков и путь к внутренней зрелости</p>
+        </div>
+        <span class="coll-chev">⌄</span>
+      </button>
+      <div class="coll-body">
+        <p class="lede2">7,5 лет великого транзита Сатурна по 12, 1 и 2 дому от Луны. Основной период выделен ярким цветом. Тёмным показаны этапы транзита, светлым — ранние заходы и возвраты Сатурна в зону Саде Сати из-за ретроградного движения.</p>
+        <div class="ep-grid" id="sadeGrid"></div>
       </div>
-      <p class="lede2">Раху — расширение, движение вперёд, новый опыт: будущее. Кету — сжатие, завершение, отпускание, кармический багаж: прошлое. Ось узлов показывает, откуда и куда ведёт задача этой жизни.</p>
-      <div id="kaxis"></div>
-      <div class="kcards" id="kcards"></div>
-      <div class="ktasks" id="ktasks"></div>
-      <div class="ksyn" id="ksyn"></div>
+    </div>
 
-      <div class="kret">
-        <p class="kt-title">Судьбоносное время: возвраты и полуобороты узлов</p>
-        <p class="lede2" style="margin-top:4px">Узлы проходят круг примерно за 18,6 года. Указан период — пока транзитный Раху идёт по знаку натального узла, и пик — дата точного соединения.</p>
+    <div class="coll" id="secSatRet">
+      <button type="button" class="coll-head" aria-expanded="false">
+        <div class="coll-head-l">
+          <p class="coll-eyebrow">Цикл ≈ 29,5 лет</p>
+          <p class="coll-title">Возврат Сатурна</p>
+          <p class="coll-teaser" id="satRetTeaser">Период значимых событий, перехода в зрелость и новый уровень ответственности</p>
+        </div>
+        <span class="coll-chev">⌄</span>
+      </button>
+      <div class="coll-body">
+        <p class="lede2">Сатурн проходит по знаку своего натального положения. Возврат — точное соединение транзитного Сатурна с его натальным местом; из-за ретро-петли соединение может повторяться до трёх раз, показаны все точные даты.</p>
+        <div class="ret-list" id="satRetList"></div>
+      </div>
+    </div>
+
+    <div class="coll" id="secNodes">
+      <button type="button" class="coll-head" aria-expanded="false">
+        <div class="coll-head-l">
+          <p class="coll-eyebrow">Цикл ≈ 18,6 лет</p>
+          <p class="coll-title">Возврат Раху–Кету</p>
+          <p class="coll-teaser" id="nodesTeaser">Период трансформаций и решения кармических задач</p>
+        </div>
+        <span class="coll-chev">⌄</span>
+      </button>
+      <div class="coll-body">
+        <p class="lede2">Полуоборот узлов и полный возврат по знакам натального положения. Указан период — пока транзитный Раху идёт по знаку натального узла, и пик — дата точного соединения. Расчёт по истинным узлам.</p>
         <div class="ret-list" id="nodeList"></div>
       </div>
     </div>
 
-    <div class="sec">
-      <div class="sec-head">
-        <div><p class="sec-eyebrow">Транзит Сатурна от Луны</p><p class="sec-title">Саде Сати</p></div>
-      </div>
-      <p class="lede2">Саде Сати — около 7,5 лет транзита Сатурна по 12, 1 и 2 дому от натальной Луны. Основной период выделен золотой полосой; серым показаны ранние заходы и возвраты Сатурна в зону из-за ретроградного движения.</p>
-      <div class="ep-grid" id="sadeGrid"></div>
-    </div>
+    <p class="group-title">Кармические задачи</p>
 
-    <div class="sec">
-      <div class="sec-head">
-        <div><p class="sec-eyebrow">Транзит Сатурна от Лагны</p><p class="sec-title">Сатурн в 1 доме</p></div>
+    <div class="coll" id="secKarma">
+      <button type="button" class="coll-head" aria-expanded="false">
+        <div class="coll-head-l">
+          <p class="coll-eyebrow">Ось узлов</p>
+          <p class="coll-title">Кармические задачи. Раху–Кету</p>
+          <p class="coll-teaser" id="karmaTeaser">Куда ведёт задача этой жизни</p>
+        </div>
+        <span class="coll-chev">⌄</span>
+      </button>
+      <div class="coll-body">
+        <p class="lede2">Раху — будущее: зона роста, развития, нового опыта и желаний, которые важно реализовать. Кету — прошлое: кармические таланты и долги, зона, которую важно принять как дар, завершить и отпустить. Движение — из Кету в Раху, из прошлого в будущее.</p>
+        <div id="kaxis"></div>
+        <div class="kcards" id="kcards"></div>
+        <div class="ktasks" id="ktasks"></div>
+        <div class="ktasks khouse" id="khouse"></div>
+        <div class="ksyn" id="ksyn"></div>
       </div>
-      <p class="lede2">Периоды, когда транзитный Сатурн проходит по знаку вашей лагны — 1 дому гороскопа. Перерывы внутри прохода — ретро-выходы Сатурна из знака.</p>
-      <div id="sat1Warn"></div>
-      <div class="ep-grid" id="sat1Grid"></div>
-    </div>
-
-    <div class="sec">
-      <div class="sec-head">
-        <div><p class="sec-eyebrow">Цикл ≈ 29,5 лет</p><p class="sec-title">Возвраты Сатурна</p></div>
-      </div>
-      <p class="lede2">Возврат Сатурна — точное соединение транзитного Сатурна с его натальным положением. Из-за ретро-петли соединение может повторяться до трёх раз — показаны все точные даты.</p>
-      <div class="ret-list" id="satRetList"></div>
     </div>
 
     <div class="sec">
       <div class="sec-head">
         <div><p class="sec-eyebrow">Периоды жизни</p><p class="sec-title">Вимшоттари Даша · маха → антар → пратьянтар</p></div>
       </div>
+      <p class="lede2">Вимшоттари-даша — основная система личных периодов в ведической астрологии, показывающая последовательность жизненных этапов, каждый из которых управляется определённой планетой. Полный цикл — 120 лет.</p>
       <div class="dasha" id="dasha"></div>
     </div>
 
@@ -559,7 +616,7 @@ table.tt{width:100%;border-collapse:collapse;font-size:14px}
         <tbody id="ttbody"><tr><td colspan="4" style="color:var(--ink-faint)">Считаем положения…</td></tr></tbody>
       </table>
     </div>
-    <p class="method">Сидерический зодиак · айанамша Лахири · для Раху–Кету показан средний узел · ℞ — ретроградное движение. Даты входа/выхода — по всемирному времени (UTC).</p>
+    <p class="method">Сидерический зодиак · айанамша Лахири · для Раху–Кету показан истинный узел · ℞ — ретроградное движение. Даты входа/выхода — по всемирному времени (UTC).</p>
   </section>
 
   <section class="brand-foot">
@@ -934,7 +991,9 @@ function localToUTC(y,mo,d,h,mi,zone){
 /* ---------- сидерические долготы ---------- */
 const SAT=Astronomy.Body.Saturn;
 function satSid(ms){const d=new Date(ms);return norm(tropLon(SAT,d)-ayanamsa(JD(d)));}
-/* средний лунный узел (Раху): формула Меёса, плавное ретроградное движение — стандарт для транзитных периодов */
+/* истинный (оскулирующий) лунный узел — совпадает с расчётом большинства джйотиш-сервисов */
+function trueRahu(ms){return trueNodeSid(new Date(ms));}
+/* средний лунный узел (Раху): формула Меёса — оставлен для сверки */
 function meanRahuSid(ms){
   const jd=ms/86400000+2440587.5, T=(jd-2451545.0)/36525.0;
   const om=125.0445479-1934.1362891*T+0.0020754*T*T+T*T*T/467441-T*T*T*T/60616000;
@@ -974,6 +1033,39 @@ function findCrossings(fn,target,t0,t1,stepMs){
   }
   return out;
 }
+/* предвычисленная выборка: медленную функцию (истинный узел) считаем один раз,
+   а ленту знаков и соединения строим уже по готовым значениям */
+function sampleFn(fn,t0,t1,step){
+  const ts=[],vs=[];
+  for(let t=t0;t<=t1;t+=step){ts.push(t);vs.push(fn(t));}
+  if(ts[ts.length-1]<t1){ts.push(t1);vs.push(fn(t1));}
+  return{ts,vs,fn};
+}
+function signTimelineS(S){
+  const{ts,vs,fn}=S,segs=[];
+  let prevS=Math.floor(vs[0]/30),segStart=ts[0];
+  for(let i=1;i<ts.length;i++){
+    const s=Math.floor(vs[i]/30);
+    if(s!==prevS){const tc=refineSignChange(fn,ts[i-1],ts[i]);segs.push({start:segStart,end:tc,sign:prevS});segStart=tc;prevS=s;}
+  }
+  segs.push({start:segStart,end:ts[ts.length-1],sign:prevS});
+  return segs;
+}
+function findCrossingsS(S,target){
+  const{ts,vs,fn}=S,out=[];
+  let prevF=sdiff(vs[0],target);
+  for(let i=1;i<ts.length;i++){
+    const f=sdiff(vs[i],target);
+    if(((prevF<0&&f>=0)||(prevF>0&&f<=0))&&Math.abs(prevF)<90&&Math.abs(f)<90){
+      let a=ts[i-1],b=ts[i],fa=prevF;
+      while(b-a>HOUR){const m=(a+b)/2,fm=sdiff(fn(m),target);((fa<0)===(fm<0))?(a=m,fa=fm):b=m;}
+      out.push((a+b)/2);
+    }
+    prevF=f;
+  }
+  return out;
+}
+
 /* непрерывные куски пребывания в зоне знаков + группировка в эпизоды */
 function chunksInZone(segs,zone){
   const chunks=[];let cur=null;
@@ -993,6 +1085,20 @@ function groupByGap(items,gapMs,startOf,endOf){
   return eps;
 }
 const GAP3Y=3*365.25*DAY;
+/* истинный узел иногда на несколько дней уходит в директное движение и пересекает границу знака
+   дважды. Такие короткие «дрожания» (<90 дней) склеиваем, чтобы период по знаку не рвался. */
+function mergeJitter(segs,gapMs){
+  const out=[];
+  for(const s of segs){
+    const prev=out[out.length-1];
+    if(prev&&prev.sign===s.sign){prev.end=s.end;continue;}
+    if(out.length>1&&out[out.length-2].sign===s.sign&&(prev.end-prev.start)<gapMs){
+      out.pop(); out[out.length-1].end=s.end; continue;
+    }
+    out.push({...s});
+  }
+  return out;
+}
 
 /* ================= КАРМИЧЕСКИЕ ЗАДАЧИ РАХУ–КЕТУ =================
    Ось по знакам — по методичке Валерии Желамской «Лунные узлы Раху–Кету».
@@ -1079,6 +1185,45 @@ const RKSIGN=[
     "от чувства жертвы и долга к щедрости и благотворительности",
     "от перфекционизма и дотошности к свободе и спонтанности"]}
 ];
+
+/* ================= ОСИ ДОМОВ РАХУ–КЕТУ =================
+   По презентации Валерии Желамской «Кармические задачи. Раху-Кету». */
+const RKHOUSE=[
+{title:"Ось 1–7",task:"неординарная личность, яркие перемены в жизни; задача — найти баланс между своим путём и партнёрством.",
+ low:["выносливость, активность, энергичность, экстраверсия","активный ум, идейность, самовыражение, эксцентричность",
+      "сомнения в себе, непонимание «кто я», иллюзии, амбиции",
+      "наработка опыта в отношениях и способность договориться — либо легко, «по карме», либо есть нехватка и поиск поддержки"],
+ high:["интроверсия, роль «белой вороны», контроль, уязвимость к критике, самокритика, неуверенность, скрытность",
+       "проницательность, интуиция, духовный путь",
+       "иллюзии в отношениях, потеря ощущения безопасности, задачи и уроки именно в отношениях"]},
+{title:"Ось 2–8",task:"нестабильность в финансах и семейной жизни, резкие перемены; задача — баланс между материальным и мистическим.",
+ low:["привязанность к желаниям и финансовому успеху при нехватке удовлетворённости",
+      "сомнения и небезопасность в семье, в финансах и ресурсах партнёра","активная речь, особенности пищевого поведения",
+      "успех в исследованиях, интуиция, мистические таланты"],
+ high:["интерес к мистике и трансформациям","нет стабильности в деньгах, не хватает управляемости в них","прямая речь или сложности с ней, резкость"]},
+{title:"Ось 3–9",task:"борьба эго и духовности, ось развития; задача — баланс между становлением личности и следованием духовным знаниям, учителям.",
+ low:["активность ума, разносторонние интересы и хобби","личная инициатива и лидерство, но и склонность к эгоцентричности",
+      "опыт следования религии или духовной системе, связь с учителем; со временем — непривязанность к догме, поиск сути и личного пути"],
+ high:["много талантов: руками, иностранные языки, писательство","возможны трудности в общении, вопросы с младшими братьями и сёстрами",
+       "поиск духовных смыслов вне готовых систем, важность передачи знаний другим"]},
+{title:"Ось 4–10",task:"перемены в месте жизни и работы, переживания в чувствах и в социальной позиции; задача — баланс между внутренним состоянием и внешними достижениями в карьере.",
+ low:["эмоциональная нестабильность, неудовлетворённость, переезды","сложности в семье, в отношениях с матерью",
+      "трудности с личными границами и пониманием своих желаний","перемены в карьере, неудовлетворённость, мало ощущения контроля"],
+ high:["закрытость или потребность в уединении, сложности в близости и понимании своих чувств, отдалённость от семьи, тревожность",
+       "важность карьерной реализации и реальные возможности успеха в ней"]},
+{title:"Ось 5–11",task:"ось креативности, амбиций, самореализации и творчества; задача — баланс между индивидуальным проявлением и своим местом в социуме, служением обществу.",
+ low:["активный ум, множество идей, разбросанность мышления","сложности с желаниями, целями, результатами и доходами",
+      "страхи, связанные с родительством, возможны трудности в вопросах детей",
+      "творческий исследовательский ум, важность уникальности, создание своих проектов и идей"],
+ high:["сильные амбиции, желания, возможности социального успеха","концентрация ума, инсайты",
+       "возможны трудности с зачатием, неудовлетворённость, разрывы с детьми — отъезд, нехватка близости; детей это не исключает"]},
+{title:"Ось 6–12",task:"служение и преодоление трудностей; задача — баланс между решением материальных задач и духовной свободой, между трудом и отдыхом.",
+ low:["сильная позиция, успех в конкуренции и борьбе, активность в ситуациях, где важны усилия","возможны болезни, которые сложно диагностировать, проблемы со сном",
+      "в прошлом — опыт духовного пути, свободы, отречения"],
+ high:["чувствительная психика, желание выйти за рамки обычного","путешествия, скитания, духовный путь","приходится отпускать, не привязываться",
+       "опыт служения, целительства, борьбы — и успеха в преодолении трудностей"]}
+];
+
 /* краткие формулировки по накшатре узла (по «Главам о накшатрах») */
 const RKNAK=[
 {r:"активность, импульсивность, резкие и стремительные перепады в деятельности",k:"сильное влияние кармы и импульсов из бессознательного, резкие перемены и уроки"},
@@ -1166,12 +1311,16 @@ function computeTransits(chart,birthMs){
   STATE.satReturns=groupByGap(cr.map(t=>({t})),GAP3Y,x=>x.t,x=>x.t).filter(g=>g.start>birthMs+2*365.25*DAY);
 
   /* --- узлы: средний Раху по натальному Раху (полный) и по натальному Кету (полуоборот) --- */
-  /* возвраты узлов считаем целиком в модели среднего узла (натальная карта при этом показывает истинные) */
-  const natRahuMean=meanRahuSid(birthMs);
-  const full=findCrossings(meanRahuSid,natRahuMean,birthMs,t1,10*DAY).map(t=>({t,kind:'full'}));
-  const half=findCrossings(meanRahuSid,norm(natRahuMean+180),birthMs,t1,10*DAY).map(t=>({t,kind:'half'}));
+  /* узлы — истинные (как в большинстве джйотиш-сервисов), и в натальной карте, и в транзитах */
+  const natRahu=chart.planets[7].lon;
+  const GAPN=180*DAY;
+  const RS=sampleFn(trueRahu,birthMs-2*365.25*DAY,t1,2*DAY);   /* одна выборка на все узловые расчёты */
+  const grp=arr=>groupByGap(arr.filter(t=>t>=birthMs).map(t=>({t})),GAPN,x=>x.t,x=>x.t)
+    .map(g=>g.items[Math.floor(g.items.length/2)].t);
+  const full=grp(findCrossingsS(RS,natRahu)).map(t=>({t,kind:'full'}));
+  const half=grp(findCrossingsS(RS,norm(natRahu+180))).map(t=>({t,kind:'half'}));
   /* период события = проход транзитного Раху по знаку натального узла; точное соединение лежит внутри */
-  const rahuSegs=signTimeline(meanRahuSid,birthMs-2*365.25*DAY,t1,10*DAY);
+  const rahuSegs=mergeJitter(signTimelineS(RS),90*DAY);
   STATE.rahuSegs=rahuSegs;
   const segAt=t=>rahuSegs.find(s=>t>=s.start&&t<=s.end)||null;
   STATE.nodeEvents=full.concat(half).filter(e=>e.t>birthMs+365.25*DAY).sort((a,b)=>a.t-b.t)
@@ -1202,6 +1351,14 @@ function renderSade(){
     html+=`</article>`;
     return html;
   }).join('');
+  const t=document.getElementById('sadeTeaser');
+  if(t){
+    const cur=eps.find(e=>isCur(e.start,e.end));
+    const next=eps.find(e=>e.start>Date.now());
+    t.textContent = cur ? 'Идёт сейчас · до '+fdm(cur.end)
+      : next ? 'Ближайший период: '+fdm(next.main.start)+' – '+fdm(next.main.end)
+      : 'В выбранном горизонте завершено';
+  }
 }
 
 function renderSat1(){
@@ -1236,6 +1393,12 @@ function renderSatReturns(){
       <div class="rl"><span class="rt">${ORD[i]||`${i+1}-й`} возврат Сатурна</span><span class="rd">${one} · Сатурн ${fmtDeg(nat.deg)} ${RASHI[nat.sign]}</span></div>
       <span class="ra">возраст ≈ ${Math.round(ageAt(g.start))}</span>${triple}</div>`;
   }).join('');
+  const t=document.getElementById('satRetTeaser');
+  if(t){
+    const cur=groups.find(g=>isCur(g.start-90*DAY,g.end+90*DAY));
+    const next=groups.find(g=>g.start>Date.now());
+    t.textContent = cur ? 'Идёт сейчас' : next ? 'Ближайший возврат: '+fdm(next.items[Math.floor(next.items.length/2)].t) : 'В выбранном горизонте завершены';
+  }
 }
 
 function renderKarma(){
@@ -1258,13 +1421,13 @@ function renderKarma(){
   document.getElementById('kcards').innerHTML=
     `<article class="kcard past">
        <div class="kc-h"><span class="kc-tag">Кету · прошлое</span><h4>${RASHI[ke.sign]}</h4></div>
-       <p class="kc-lead">Сжатие, завершение, отпускание. Здесь ваш кармический багаж: то, что уже наработано и в чём легко застрять.</p>
+       <p class="kc-lead">Кармические таланты и долги: зона, которую важно принять как дар, завершить и отпустить.</p>
        <div class="kc-row"><dt>Что уже есть</dt><dd>${ax.k}</dd></div>
        <div class="kc-row"><dt>Накшатра ${NAK[kNak.i]}</dt><dd>${RKNAK[kNak.i].k}</dd></div>
      </article>
      <article class="kcard fut">
        <div class="kc-h"><span class="kc-tag">Раху · будущее</span><h4>${RASHI[ra.sign]}</h4></div>
-       <p class="kc-lead">Расширение, движение вперёд, новый опыт. Здесь зона роста: непривычно, но именно туда ведёт задача.</p>
+       <p class="kc-lead">Зона роста, развития, нового опыта и желаний, которые важно реализовать.</p>
        <div class="kc-row"><dt>Куда расти</dt><dd>${ax.r}</dd></div>
        <div class="kc-row"><dt>Накшатра ${NAK[rNak.i]}</dt><dd>${RKNAK[rNak.i].r}</dd></div>
      </article>`;
@@ -1274,6 +1437,16 @@ function renderKarma(){
     `<p class="kt-title">Ось перехода</p><ul class="kt-list">`+
     ax.t.map(x=>`<li>${x}</li>`).join('')+`</ul>`;
 
+  /* --- ось домов --- */
+  const hIdx = ra.house<=6 ? ra.house-1 : ra.house-7;
+  const raLow = ra.house<=6;                 /* Раху в младшем доме пары (1..6) или в старшем (7..12) */
+  const hx = RKHOUSE[hIdx];
+  const hPts = raLow ? hx.low : hx.high;
+  document.getElementById('khouse').innerHTML=
+    `<p class="kt-title">${hx.title} · Раху ${ra.house} дом, Кету ${ke.house} дом</p>
+     <p class="kh-task">${hx.task}</p>
+     <ul class="kt-list">`+hPts.map(x=>`<li>${x}</li>`).join('')+`</ul>`;
+
   /* --- соединённая трактовка --- */
   document.getElementById('ksyn').innerHTML=
     `<p class="ks-title">Что это значит для вас</p>
@@ -1281,7 +1454,8 @@ function renderKarma(){
      <p><b>Опора, которая уже есть.</b> Кету в ${RASHI_IN[ke.sign]}, накшатра ${NAK[kNak.i]}: ${RKNAK[kNak.i].k}. Этим можно пользоваться как готовым навыком, но не стоит прятаться здесь от роста: возвращение в привычное даёт ощущение безопасности и одновременно топчется на месте.</p>
      <p><b>Зона роста.</b> Раху в ${RASHI_IN[ra.sign]}, накшатра ${NAK[rNak.i]}: ${RKNAK[rNak.i].r}. Сюда тянет и одновременно пугает, здесь легко перегнуть палку — и именно здесь набирается новый опыт этой жизни.</p>`;
 
-  renderNodeReturns();
+  const t=document.getElementById('karmaTeaser');
+  if(t)t.textContent = `Кету в ${RASHI_IN[ke.sign]} → Раху в ${RASHI_IN[ra.sign]}`;
 }
 
 function renderNodeReturns(){
@@ -1306,6 +1480,14 @@ function renderNodeReturns(){
       <div class="passes">пик — точное соединение ${fdm(e.t)} · ${desc}</div>
     </div>`;
   }).join('');
+  const t=document.getElementById('nodesTeaser');
+  if(t){
+    const cur=evs.find(e=>isCur(e.pstart,e.pend));
+    const next=evs.find(e=>e.pstart>Date.now());
+    t.textContent = cur ? 'Идёт сейчас · до '+fdm(cur.pend)
+      : next ? 'Ближайший период: '+fdm(next.pstart)+' – '+fdm(next.pend)
+      : 'В выбранном горизонте завершены';
+  }
 }
 
 /* ---------- лента жизни ---------- */
@@ -1315,7 +1497,6 @@ function renderTimeline(){
   const x=t=>G+Math.max(0,Math.min(1,(t-STATE.birthMs)/(H*365.25*DAY)))*plotW;
   const LANES=[
     {t:'Саде Сати',s:'Сатурн по 12–1–2 от Луны',c:'#b0512c'},
-    {t:'Сатурн в 1 доме',s:'по знаку лагны',c:'#a8842c'},
     {t:'Возврат Сатурна',s:'каждые ~29,5 лет',c:'#b0512c'},
     {t:'Узлы Раху–Кету',s:'возврат / полуоборот',c:'#5c7a52'},
   ];
@@ -1361,23 +1542,18 @@ function renderTimeline(){
       g+=bar(0,c.start,c.end,'#b0512c',c===ep.main?0.9:0.25,null,`${fdm(c.start)} – ${fdm(c.end)}`);
     g+=`<text x="${x(ep.main.start)}" y="${rowMid(0)-12}" font-size="9" font-weight="700" fill="#96431f">${yr(ep.main.start)}–${yr(ep.main.end)}</text>`;
   }
-  /* 1 — Сатурн в 1 доме */
-  for(const p of STATE.sat1Passes)if(inHorizon(p.start,p.end)){
-    for(const c of p.items)g+=bar(1,c.start,c.end,'#a8842c',0.8,null,`${fdm(c.start)} – ${fdm(c.end)}`);
-    g+=`<text x="${x(p.start)}" y="${rowMid(1)-12}" font-size="9" font-weight="700" fill="#8f6a28">${yr(p.start)}–${yr(p.end)}</text>`;
-  }
-  /* 2 — возвраты Сатурна */
+  /* 1 — возвраты Сатурна */
   for(const gr of STATE.satReturns)for(const it of gr.items)if(it.t>=STATE.birthMs&&it.t<=hEnd()){
-    const cx=x(it.t),cy=rowMid(2);
+    const cx=x(it.t),cy=rowMid(1);
     g+=`<g><title>точное соединение ${fdm(it.t)}</title><circle cx="${cx}" cy="${cy}" r="6.5" fill="#fff" stroke="#b0512c" stroke-width="2.5"/></g>`;
     if(it===gr.items[0])g+=`<text x="${cx}" y="${cy-12}" text-anchor="middle" font-size="9" font-weight="700" fill="#96431f">${yr(it.t)}</text>`;
   }
-  /* 3 — узлы: период + пик */
+  /* 2 — узлы: период + пик */
   for(const e of STATE.nodeEvents)if(e.t>=STATE.birthMs&&e.t<=hEnd()){
     const full=e.kind==='full';
-    g+=bar(3,e.pstart,e.pend,'#5c7a52',full?0.75:0.3,null,
+    g+=bar(2,e.pstart,e.pend,'#5c7a52',full?0.75:0.3,null,
       `${full?'Полный возврат':'Полуоборот'}: ${fdm(e.pstart)} – ${fdm(e.pend)} · пик ${fdm(e.t)}`);
-    const cx=x(e.t),cy=rowMid(3);
+    const cx=x(e.t),cy=rowMid(2);
     g+=`<rect x="${cx-4}" y="${cy-4}" width="8" height="8" rx="1.5" transform="rotate(45 ${cx} ${cy})" fill="${full?'#4a6342':'#fff'}" stroke="#4a6342" stroke-width="${full?0:2}"/>`;
     g+=`<text x="${cx}" y="${cy-13}" text-anchor="middle" font-size="8.5" font-weight="${full?700:500}" fill="#4a6342">${yr(e.t)}</text>`;
   }
@@ -1394,7 +1570,7 @@ function renderTimeline(){
 }
 
 function renderAll(){
-  renderTimeline();renderKarma();renderSade();renderSat1();renderSatReturns();
+  renderTimeline();renderKarma();renderSade();renderSatReturns();renderNodeReturns();
 }
 
 /* ---------- опорные точки карты ---------- */
@@ -1491,7 +1667,7 @@ function renderNowTransits(){
     const retro=name!=='Луна'&&name!=='Солнце'&&sdiff(fn(now+DAY),fn(now))<0;
     rows+=`<tr><td class="pn">${name}${retro?'<span class="rx">℞</span>':''}</td><td>${RASHI[iv.sign]}</td><td class="dt">${iv.entry?fdm(iv.entry):'—'}</td><td class="dt">${iv.exit?fdm(iv.exit):'—'}</td></tr>`;
   }
-  const rn=currentInterval(meanRahuSid,now,2*DAY,760*DAY);
+  const rn=currentInterval(trueRahu,now,DAY,760*DAY);
   rows+=`<tr><td class="pn">Раху / Кету<span class="rx">℞</span></td><td>${RASHI[rn.sign]} / ${RASHI[(rn.sign+6)%12]}</td><td class="dt">${rn.entry?fdm(rn.entry):'—'}</td><td class="dt">${rn.exit?fdm(rn.exit):'—'}</td></tr>`;
   document.getElementById('ttbody').innerHTML=rows;
 }
@@ -1613,12 +1789,11 @@ document.getElementById('calc').addEventListener('click',()=>{
       document.getElementById('birthLine').textContent=
         `${d} ${MONTHS[mo-1]} ${y} г. · ${noon?'12:00 (время не указано — полдень, лагна условна)':timeV} · ${place.name}`;
       drawNorth(chart);
-      renderKeyfacts(chart);
       renderDasha(STATE.mahas,STATE.birthMs);
       renderAll();
       document.getElementById('foot').innerHTML=
         `${place.name}${place.admin1?', '+place.admin1:''}${place.country?', '+place.country:''} · ${place.latitude.toFixed(3)}°, ${place.longitude.toFixed(3)}° · ${place.timezone}<br>`+
-        `Движок Astronomy Engine (MIT) · сидерический зодиак · айанамша Лахири (Читрапакша) · дома целых знаков · натальные узлы истинные; транзиты и возвраты узлов — по среднему узлу · границы периодов уточнены до ~1 часа (даты по UTC) · Саде Сати: транзит Сатурна по 12, 1 и 2 дому от Луны — по материалам Валерии Желамской, nakshatri.ru. Предварительная версия расчёта — на согласовании с астрологом.`;
+        `Движок Astronomy Engine (MIT) · сидерический зодиак · айанамша Лахири (Читрапакша) · дома целых знаков · лунные узлы истинные (оскулирующие) — и в карте, и в транзитах · границы периодов уточнены до ~1 часа (даты по UTC) · Саде Сати: транзит Сатурна по 12, 1 и 2 дому от Луны — по материалам Валерии Желамской, nakshatri.ru. Предварительная версия расчёта — на согласовании с астрологом.`;
 
       if(document.getElementById('rememberMe').checked)saveBirth(place,dateV,noon?'':timeV,noTimeEl.checked,!!(mlat&&mlon&&mtz));
       else try{localStorage.removeItem(BKEY);}catch(e){}
@@ -1632,6 +1807,24 @@ document.getElementById('calc').addEventListener('click',()=>{
 
 /* справочные транзиты — сразу при загрузке */
 setTimeout(()=>{try{renderNowTransits();}catch(e){console.error(e);document.getElementById('ttbody').innerHTML='<tr><td colspan="4">Не удалось рассчитать.</td></tr>';}},200);
+
+/* ================= раскрывающиеся карточки + переходы с ленты ================= */
+document.querySelectorAll('.coll-head').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const card=btn.closest('.coll');
+    const open=card.classList.toggle('open');
+    btn.setAttribute('aria-expanded',open?'true':'false');
+  });
+});
+document.querySelectorAll('.tl-jump button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const el=document.getElementById(btn.dataset.target);
+    if(!el)return;
+    el.classList.add('open');
+    el.querySelector('.coll-head')?.setAttribute('aria-expanded','true');
+    el.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
 </script>
 
 </body>
