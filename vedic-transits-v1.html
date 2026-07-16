@@ -331,6 +331,43 @@
 .tl-legend .lg-soft i{background:rgba(176,81,44,.25)}
 .tl-legend .lg-dot i{background:#fff;border:2px solid var(--terra);border-radius:50%;width:10px;height:10px}
 .tl-legend .lg-hint{color:var(--ink-faint);font-style:italic}
+/* тулбар ленты: фильтры + зум */
+.tl-toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-top:16px}
+.tl-filters{display:flex;gap:8px;flex-wrap:wrap}
+.fchip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-strong);background:#fff;border-radius:999px;padding:6px 13px;font-size:12.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:all .15s;opacity:.55}
+.fchip i{display:inline-block;width:12px;height:9px;border-radius:3px}
+.fchip.on{opacity:1;border-color:var(--gold);background:rgba(168,132,44,.07);color:var(--ink)}
+.tl-zoom{display:flex;align-items:center;gap:8px}
+.tl-zoom button{border:1px solid var(--line-strong);background:#fff;border-radius:10px;width:32px;height:32px;font-size:17px;font-weight:700;color:var(--ink);cursor:pointer;line-height:1;transition:all .15s}
+.tl-zoom button:hover{border-color:var(--terra);color:var(--terra)}
+.tl-zoom .tl-reset{width:auto;padding:0 12px;font-size:12px;font-weight:600;color:var(--ink-soft)}
+#tlZoomLab{font-size:12px;font-weight:600;color:var(--ink-soft);min-width:86px;text-align:center}
+.tl-drag-hint{font-size:11.5px;color:var(--ink-faint);font-style:italic;margin-top:8px}
+.tl-scroll.zoomed{border-color:var(--gold)}
+/* конструктор транзитов */
+.cx-presets{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:14px}
+.cx-presets-lab{font-size:12px;color:var(--ink-faint)}
+.cx-preset{border:1px solid var(--line-strong);background:#fff;border-radius:999px;padding:7px 14px;font-size:12.5px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:all .15s}
+.cx-preset:hover{border-color:var(--gold);color:var(--ink)}
+.cx-row{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-top:16px}
+.cxf{display:flex;flex-direction:column;gap:6px}
+.cxf>span{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-faint)}
+.cxf select{border:1px solid var(--line-strong);background:#fff;border-radius:10px;padding:10px 12px;font-size:14px;font-family:var(--sans);color:var(--ink);min-width:130px}
+.cxseg{display:flex;border:1px solid var(--line-strong);border-radius:10px;overflow:hidden;background:#fff}
+.cxseg button{border:none;background:transparent;padding:10px 14px;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer}
+.cxseg button.on{background:var(--terra);color:#fdf6e9}
+.cx-btn{margin:0;padding:11px 20px;width:auto}
+.cx-note{font-size:12px;color:var(--ink-faint);margin-top:10px;line-height:1.5}
+.cx-desc{font-size:13.5px;color:var(--ink-soft);margin-top:6px;line-height:1.55;max-width:70ch}
+.cx-active{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.cx-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--cc);background:#fff;border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer}
+.cx-chip i{width:10px;height:10px;border-radius:3px;background:var(--cc)}
+.cx-chip span{color:var(--ink-faint);font-size:14px;line-height:1}
+.cx-chip:hover span{color:var(--terra)}
+.cx-block{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.cx-title{display:flex;align-items:center;gap:9px;font-size:15px;font-weight:700}
+.cx-title i{width:12px;height:12px;border-radius:3px;background:var(--cc);flex-shrink:0}
+.tl-scroll{touch-action:pan-y}
 .tl-scroll svg{min-width:900px}
 .tl-scroll svg rect[fill]{cursor:default}
 /* ---- кармические задачи Раху–Кету ---- */
@@ -512,7 +549,22 @@ table.tt{width:100%;border-collapse:collapse;font-size:14px}
       <div class="sec-head">
         <div><p class="sec-eyebrow">Лента жизни</p><p class="sec-title">Большие транзиты на одной шкале</p></div>
       </div>
+      <div class="tl-toolbar">
+        <div class="tl-filters">
+          <button type="button" class="fchip on" data-lane="sade"><i style="background:rgba(176,81,44,.9)"></i>Саде Сати</button>
+          <button type="button" class="fchip on" data-lane="satret"><i style="background:#fff;border:2px solid #b0512c;border-radius:50%"></i>Возврат Сатурна</button>
+          <button type="button" class="fchip on" data-lane="nodes"><i style="background:rgba(92,122,82,.8)"></i>Узлы Раху–Кету</button>
+          <button type="button" class="fchip on" data-lane="dasha"><i style="background:rgba(168,132,44,.6)"></i>Даши</button>
+        </div>
+        <div class="tl-zoom">
+          <button type="button" id="tlZoomOut" aria-label="Отдалить">−</button>
+          <span id="tlZoomLab">весь горизонт</span>
+          <button type="button" id="tlZoomIn" aria-label="Приблизить">+</button>
+          <button type="button" id="tlZoomReset" class="tl-reset">сброс</button>
+        </div>
+      </div>
       <div class="tl-scroll" id="tlScroll"></div>
+      <p class="tl-drag-hint" id="tlDragHint">при увеличении ленту можно двигать: тяните её пальцем или мышью · антардаши появляются при приближении</p>
       <div class="tl-legend">
         <span class="lg-main"><i></i>основной период</span>
         <span class="lg-soft"><i></i>ретро-заходы и возвраты в зону</span>
@@ -571,6 +623,53 @@ table.tt{width:100%;border-collapse:collapse;font-size:14px}
       <div class="coll-body">
         <p class="lede2">Полуоборот узлов и полный возврат по знакам натального положения. Указан период — пока транзитный Раху идёт по знаку натального узла, и пик — дата точного соединения. Расчёт по истинным узлам.</p>
         <div class="ret-list" id="nodeList"></div>
+      </div>
+    </div>
+
+    <div class="coll" id="secCustom">
+      <button type="button" class="coll-head" aria-expanded="false">
+        <div class="coll-head-l">
+          <p class="coll-eyebrow">Конструктор</p>
+          <p class="coll-title">Транзит планеты по дому</p>
+          <p class="coll-teaser">Юпитер, Сатурн или любая граха в выбранном доме — от лагны или от Луны. Периоды добавляются на ленту жизни</p>
+        </div>
+        <span class="coll-chev">⌄</span>
+      </button>
+      <div class="coll-body">
+        <p class="lede2">Выберите планету, дом и точку отсчёта — калькулятор покажет точные периоды и добавит дорожку на ленту жизни (до трёх условий одновременно).</p>
+        <div class="cx-presets">
+          <span class="cx-presets-lab">Популярное:</span>
+          <button type="button" class="cx-preset" data-p="ju" data-h="1">Юпитер в 1 доме</button>
+          <button type="button" class="cx-preset" data-p="ju" data-h="10">Юпитер в 10 доме</button>
+          <button type="button" class="cx-preset" data-p="sa" data-h="1">Сатурн в 1 доме</button>
+          <button type="button" class="cx-preset" data-p="sa" data-h="10">Сатурн в 10 доме</button>
+        </div>
+        <div class="cx-row">
+          <label class="cxf"><span>Планета</span>
+            <select id="cxPlanet">
+              <option value="ju">Юпитер</option><option value="sa">Сатурн</option>
+              <option value="ra">Раху</option><option value="ke">Кету</option>
+              <option value="su">Солнце</option><option value="mo">Луна</option>
+              <option value="ma">Марс</option><option value="me">Меркурий</option>
+              <option value="ve">Венера</option>
+            </select></label>
+          <label class="cxf"><span>В доме</span>
+            <select id="cxHouse">
+              <option value="1">1 дом</option><option value="2">2 дом</option><option value="3">3 дом</option>
+              <option value="4">4 дом</option><option value="5">5 дом</option><option value="6">6 дом</option>
+              <option value="7">7 дом</option><option value="8">8 дом</option><option value="9">9 дом</option>
+              <option value="10">10 дом</option><option value="11">11 дом</option><option value="12">12 дом</option>
+            </select></label>
+          <div class="cxf"><span>Отсчёт</span>
+            <div class="cxseg">
+              <button type="button" class="on" data-from="lagna">от Лагны</button>
+              <button type="button" data-from="moon">от Луны</button>
+            </div></div>
+          <button type="button" class="btn cx-btn" id="cxAdd">Показать периоды →</button>
+        </div>
+        <p class="cx-note" id="cxLimit" style="display:none">Достигнут предел: три условия на ленте. Удалите одно из активных, чтобы добавить новое.</p>
+        <div class="cx-active" id="cxActive"></div>
+        <div id="cxResults"></div>
       </div>
     </div>
 
@@ -1278,7 +1377,7 @@ const isCur=(s,e)=>Date.now()>=s&&Date.now()<=e;
 
 /* ---------- состояние ---------- */
 const STATE={ready:false,birthMs:0,chart:null,mahas:null,noon:false,horizon:90,
-  satSegs:null,sadeEpisodes:null,sat1Passes:null,satReturns:null,nodeEvents:null};
+  satSegs:null,sadeEpisodes:null,satReturns:null,nodeEvents:null,custom:[]};
 
 /* ---------- главный расчёт транзитов ---------- */
 function computeTransits(chart,birthMs){
@@ -1298,11 +1397,6 @@ function computeTransits(chart,birthMs){
     for(const c of ep.items)if(c.end-c.start>main.end-main.start)main=c;
     return {start:ep.start,end:ep.end,chunks:ep.items,main,moonSign};
   }).filter(ep=>ep.end>=birthMs);
-
-  /* --- Сатурн в 1 доме (знак лагны) --- */
-  const zl=new Set([chart.lagnaSign]);
-  const ch1=chunksInZone(satSegs,zl);
-  STATE.sat1Passes=groupByGap(ch1,GAP3Y,c=>c.start,c=>c.end).filter(p=>p.end>=birthMs);
 
   /* --- возвраты Сатурна: точные соединения с натальным Сатурном --- */
   const natSat=chart.planets[6].lon;
@@ -1359,25 +1453,6 @@ function renderSade(){
       : next ? 'Ближайший период: '+fdm(next.main.start)+' – '+fdm(next.main.end)
       : 'В выбранном горизонте завершено';
   }
-}
-
-function renderSat1(){
-  const passes=STATE.sat1Passes.filter(p=>inHorizon(p.start,p.end));
-  const box=document.getElementById('sat1Grid');
-  document.getElementById('sat1Warn').innerHTML=STATE.noon?'<div class="warn">⚠️ Время рождения не указано — лагна рассчитана на полдень и может отличаться. Для точного 1 дома укажите время рождения.</div>':'';
-  if(!passes.length){box.innerHTML='<p class="lede2">В выбранном горизонте проходов нет.</p>';return;}
-  const sign=RASHI[STATE.chart.lagnaSign];
-  box.innerHTML=passes.map((p,i)=>{
-    let inner='';
-    p.items.forEach((c,k)=>{
-      if(k>0){const g=p.items[k-1];inner+=`<div class="gapline">перерыв: ${fdm(g.end)} – ${fdm(c.start)} · ретро-выход из знака</div>`;}
-      inner+=`<div class="seg"><b>${fdm(c.start)} – ${fdm(c.end)}</b><span>Сатурн в ${sign} · 1 дом</span></div>`;
-    });
-    return `<article class="ep${isCur(p.start,p.end)?' cur':''}">
-      <h4>${i+1}-й проход ${statusChip(p.start,p.end)}</h4>
-      <div class="ep-main"><b>${fdm(p.start)} – ${fdm(p.end)}</b><span>Сатурн в знаке лагны (${sign}) · ${ageSpan(p.start,p.end)}</span></div>
-      ${inner}</article>`;
-  }).join('');
 }
 
 function renderSatReturns(){
@@ -1490,32 +1565,152 @@ function renderNodeReturns(){
   }
 }
 
-/* ---------- лента жизни ---------- */
+/* ================= КОНСТРУКТОР: планета в доме от лагны / от Луны ================= */
+function sidOf(body){return ms=>{const d=new Date(ms);return norm(tropLon(body,d)-ayanamsa(JD(d)));};}
+const CX_BODIES={
+  su:{n:'Солнце', fn:()=>sidOf(Astronomy.Body.Sun),     step:12*HOUR, mode:'fast'},
+  mo:{n:'Луна',   fn:()=>sidOf(Astronomy.Body.Moon),    step:HOUR,    mode:'moon'},
+  ma:{n:'Марс',   fn:()=>sidOf(Astronomy.Body.Mars),    step:12*HOUR, mode:'fast'},
+  me:{n:'Меркурий',fn:()=>sidOf(Astronomy.Body.Mercury),step:6*HOUR,  mode:'fast'},
+  ju:{n:'Юпитер', fn:()=>sidOf(Astronomy.Body.Jupiter), step:4*DAY,   mode:'slow'},
+  ve:{n:'Венера', fn:()=>sidOf(Astronomy.Body.Venus),   step:12*HOUR, mode:'fast'},
+  sa:{n:'Сатурн', fn:()=>satSid,                        step:6*DAY,   mode:'slow'},
+  ra:{n:'Раху',   fn:()=>trueRahu,                      step:2*DAY,   mode:'slow'},
+  ke:{n:'Кету',   fn:()=>(ms=>norm(trueRahu(ms)+180)),  step:2*DAY,   mode:'slow'},
+};
+const CX_COLORS=['#4f6f7d','#7d6a4f','#8a5a6b'];
+const CX_TEXT={
+  ju:'Транзит Юпитера — период возможностей и удачи. Транзит Юпитера по дому показывает, какая сфера жизни получает потенциал для роста и расширения.',
+  sa:'Транзит Сатурна — период уроков, ограничений и ответственности. Показывает сферу жизни, в которой важно проявить зрелость, дисциплину и терпение.',
+};
+function cxCompute(pk,house,fromMoon){
+  const B=CX_BODIES[pk], fn=B.fn(), now=Date.now();
+  const base=fromMoon?STATE.chart.planets[1].sign:STATE.chart.lagnaSign;
+  const sign=(base+house-1)%12;
+  let t0,t1,gap,fine=HOUR;
+  if(B.mode==='slow'){t0=STATE.birthMs-2*365.25*DAY;t1=STATE.birthMs+120*365.25*DAY;gap=GAP3Y;}
+  else if(B.mode==='fast'){t0=now-365.25*DAY;t1=now+3*365.25*DAY;gap=180*DAY;}
+  else{t0=now-7*DAY;t1=now+95*DAY;gap=2*DAY;fine=600e3;}
+  let segs=signTimeline(fn,t0,t1,B.step);
+  if(pk==='ra'||pk==='ke')segs=mergeJitter(segs,90*DAY);
+  const chunks=chunksInZone(segs,new Set([sign]));
+  let passes=groupByGap(chunks,gap,c=>c.start,c=>c.end);
+  if(B.mode==='slow')passes=passes.filter(p=>p.end>=STATE.birthMs);
+  return{pk,house,fromMoon,sign,mode:B.mode,passes,scanT0:t0,scanT1:t1,
+    label:`${B.n} · ${house} дом от ${fromMoon?'Луны':'лагны'}`,
+    short:`${B.n} · ${house} дом`,sub:`от ${fromMoon?'Луны':'лагны'} · ${RASHI[sign]}`,
+    id:pk+house+(fromMoon?'m':'l')};
+}
+const fdmT=ms=>{const d=new Date(ms);return `${String(d.getDate()).padStart(2,'0')} ${MON3[d.getMonth()]}, ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;};
+function cxRender(){
+  const box=document.getElementById('cxResults'), act=document.getElementById('cxActive');
+  act.innerHTML=STATE.custom.map((c,i)=>
+    `<button type="button" class="cx-chip" data-i="${i}" style="--cc:${c.color}"><i></i>${c.label}<span>×</span></button>`).join('');
+  act.querySelectorAll('.cx-chip').forEach(ch=>ch.addEventListener('click',()=>{
+    STATE.custom.splice(+ch.dataset.i,1);cxRender();renderTimeline();}));
+  document.getElementById('cxAdd').disabled=STATE.custom.length>=3;
+  document.getElementById('cxLimit').style.display=STATE.custom.length>=3?'block':'none';
+
+  box.innerHTML=STATE.custom.map(c=>{
+    const passes=c.mode==='slow'?c.passes.filter(p=>inHorizon(p.start,p.end)):c.passes;
+    const noonWarn=(!c.fromMoon&&STATE.noon)?'<p class="cx-note">⚠️ время рождения не указано — лагна условна (полдень)</p>':'';
+    const valText=CX_TEXT[c.pk]?`<p class="cx-desc">${CX_TEXT[c.pk]}</p>`:'';
+    const scanNote=c.mode==='slow'?'':(c.mode==='moon'
+      ?'<p class="cx-note">Луна проходит дом за 2–3 дня — показаны периоды на ближайшие 3 месяца. Время — вашего устройства.</p>'
+      :'<p class="cx-note">Быстрая планета — показаны периоды примерно на 3 года вперёд.</p>');
+    const rows=passes.length?passes.map(p=>{
+      const dt=c.mode==='moon'?`${fdmT(p.start)} – ${fdmT(p.end)}`:`${fdm(p.start)} – ${fdm(p.end)}`;
+      const age=c.mode==='slow'?` · ${ageSpan(p.start,p.end)}`:'';
+      const inter=p.items.length>1?`<div class="passes">с перерывами (ретро-движение): ${p.items.map(ch=>`${fdm(ch.start)} – ${fdm(ch.end)}`).join(' · ')}</div>`:'';
+      return `<div class="retn${isCur(p.start,p.end)?' cur':''}"><div class="rl"><span class="rt">${dt}</span><span class="rd">${c.label} · ${RASHI[c.sign]}${age}</span></div>${isCur(p.start,p.end)?'<span class="st now">идёт сейчас</span>':''}${inter}</div>`;
+    }).join(''):'<p class="lede2">Периодов в расчётном окне нет.</p>';
+    return `<div class="cx-block" style="--cc:${c.color}">
+      <p class="cx-title"><i></i>${c.label} · знак ${RASHI[c.sign]}</p>
+      ${valText}${noonWarn}${scanNote}
+      <div class="ret-list" style="margin-top:10px">${rows}</div></div>`;
+  }).join('');
+}
+function cxAddCurrent(pk,house,fromMoon){
+  if(!STATE.ready||STATE.custom.length>=3)return;
+  const id=pk+house+(fromMoon?'m':'l');
+  if(STATE.custom.some(c=>c.id===id))return;
+  const btn=document.getElementById('cxAdd');
+  btn.textContent='Считаем…';btn.disabled=true;
+  setTimeout(()=>{
+    try{
+      const c=cxCompute(pk,house,fromMoon);
+      c.color=CX_COLORS.find(col=>!STATE.custom.some(x=>x.color===col))||CX_COLORS[0];
+      STATE.custom.push(c);
+      cxRender();
+      /* быстрые планеты: приближаем ленту к их окну */
+      if(c.mode!=='slow'){
+        const span=c.scanT1-c.scanT0, full=STATE.horizon*365.25*DAY;
+        const zooms=[1,2,4,8,16];
+        TL.zoom=zooms.filter(z=>full/z>=span*0.9).pop()||16;
+        TL.start=(c.scanT0+c.scanT1)/2-STATE.birthMs-tlSpanMs()/2;
+      }
+      renderTimeline();
+    }catch(e){console.error(e);}
+    btn.textContent='Показать периоды →';btn.disabled=STATE.custom.length>=3;
+  },30);
+}
+
+/* ---------- лента жизни: зум, панорама, фильтры, даши ---------- */
+const TL={zoom:1,start:0,show:{sade:true,satret:true,nodes:true,dasha:true}};
+const LORD_AB={'Солнце':'Со','Луна':'Лу','Марс':'Ма','Меркурий':'Ме','Юпитер':'Юп','Венера':'Ве','Сатурн':'Са','Раху':'Ра','Кету':'Ке'};
+const MON1=["янв","фев","мар","апр","май","июн","июл","авг","сен","окт","ноя","дек"];
+
+function tlSpanMs(){return STATE.horizon*365.25*DAY/TL.zoom;}
+function tlClamp(){
+  const full=STATE.horizon*365.25*DAY, span=tlSpanMs();
+  TL.start=Math.max(0,Math.min(TL.start,full-span));
+}
+function tlWindow(){tlClamp();const t0=STATE.birthMs+TL.start;return[t0,t0+tlSpanMs()];}
+
 function renderTimeline(){
-  const H=STATE.horizon, W=1080, G=168, R=16;           /* G — колонка подписей */
-  const plotW=W-G-R;
-  const x=t=>G+Math.max(0,Math.min(1,(t-STATE.birthMs)/(H*365.25*DAY)))*plotW;
-  const LANES=[
-    {t:'Саде Сати',s:'Сатурн по 12–1–2 от Луны',c:'#b0512c'},
-    {t:'Возврат Сатурна',s:'каждые ~29,5 лет',c:'#b0512c'},
-    {t:'Узлы Раху–Кету',s:'возврат / полуоборот',c:'#5c7a52'},
-  ];
-  const laneH=62, top=52, H0=top+LANES.length*laneH+16;
-  const laneY=i=>top+i*laneH;
-  const rowMid=i=>laneY(i)+laneH/2-4;
+  const W=1080, G=168, R=16, plotW=W-G-R;
+  const [t0v,t1v]=tlWindow(), spanMs=t1v-t0v, spanY=spanMs/(365.25*DAY);
+  const x=t=>G+Math.max(-40,Math.min(plotW+40,(t-t0v)/spanMs*plotW));
+  const vis=(s,e)=>s<=t1v&&e>=t0v;
+  const clip=(t)=>Math.max(t0v,Math.min(t1v,t));
+
+  const LANES=[];
+  if(TL.show.sade)LANES.push({k:'sade',t:'Саде Сати',s:'Сатурн по 12–1–2 от Луны',c:'#b0512c'});
+  if(TL.show.satret)LANES.push({k:'satret',t:'Возврат Сатурна',s:'каждые ~29,5 лет',c:'#b0512c'});
+  if(TL.show.nodes)LANES.push({k:'nodes',t:'Узлы Раху–Кету',s:'возврат / полуоборот',c:'#5c7a52'});
+  STATE.custom.forEach((c,ci)=>LANES.push({k:'cx'+ci,t:c.short,s:c.sub,c:c.color,cx:c}));
+  if(TL.show.dasha)LANES.push({k:'dasha',t:'Вимшоттари Даша',s:spanY<=24?'маха + антар':'махадаши',c:'#8f6a28'});
+  const laneH=62, top=52, H0=top+Math.max(1,LANES.length)*laneH+16;
+  const laneY=i=>top+i*laneH, rowMid=i=>laneY(i)+laneH/2-4;
+  const li=k=>LANES.findIndex(L=>L.k===k);
   const now=Date.now();
-  let g=`<svg viewBox="0 0 ${W} ${H0}" xmlns="http://www.w3.org/2000/svg" font-family="Onest,system-ui,sans-serif">`;
+
+  let g=`<svg viewBox="0 0 ${W} ${H0}" xmlns="http://www.w3.org/2000/svg" font-family="Onest,system-ui,sans-serif" style="touch-action:pan-y">`;
+  g+=`<rect x="0" y="0" width="${W}" height="${H0}" fill="transparent"/>`;
 
   /* прошлое — приглушённый фон */
-  if(now>STATE.birthMs)g+=`<rect x="${G}" y="${top-14}" width="${Math.max(0,x(Math.min(now,hEnd()))-G)}" height="${H0-top}" fill="#2c2419" fill-opacity=".035"/>`;
+  if(now>t0v)g+=`<rect x="${G}" y="${top-14}" width="${Math.max(0,x(Math.min(now,t1v))-G)}" height="${H0-top}" fill="#2c2419" fill-opacity=".035"/>`;
 
-  /* сетка десятилетий */
-  const by=new Date(STATE.birthMs).getUTCFullYear();
-  for(let a=0;a<=H;a+=10){
-    const xx=G+a/H*plotW;
+  /* сетка: шаг по масштабу */
+  const stepY = spanY>40?10 : spanY>16?5 : 1;
+  const a0=Math.floor((t0v-STATE.birthMs)/(365.25*DAY)/stepY)*stepY;
+  for(let a=Math.max(0,a0);a<=(t1v-STATE.birthMs)/(365.25*DAY)+0.001;a+=stepY){
+    const t=STATE.birthMs+a*365.25*DAY; if(t<t0v-1||t>t1v+1)continue;
+    const xx=x(t);
     g+=`<line x1="${xx}" y1="${top-14}" x2="${xx}" y2="${H0-10}" stroke="#2c2419" stroke-opacity=".09"/>`;
     g+=`<text x="${xx}" y="18" text-anchor="middle" font-size="11" font-weight="700" fill="#6f6353">${a}</text>`;
-    g+=`<text x="${xx}" y="30" text-anchor="middle" font-size="8.5" fill="#9b8f7c">${by+a}</text>`;
+    g+=`<text x="${xx}" y="30" text-anchor="middle" font-size="8.5" fill="#9b8f7c">${new Date(t).getUTCFullYear()}</text>`;
+  }
+  /* месячная сетка при сильном приближении */
+  if(spanY<=6){
+    const d0=new Date(t0v); let y=d0.getUTCFullYear(), m=d0.getUTCMonth();
+    for(;;){
+      m++; if(m>11){m=0;y++;}
+      const t=Date.UTC(y,m,1); if(t>t1v)break;
+      const xx=x(t);
+      g+=`<line x1="${xx}" y1="${top-4}" x2="${xx}" y2="${H0-10}" stroke="#2c2419" stroke-opacity=".045"/>`;
+      if(spanY<=3||m%3===0)g+=`<text x="${xx+2}" y="${top-6}" font-size="7.5" fill="#b3a78f">${MON1[m]}</text>`;
+    }
   }
   g+=`<text x="${G-10}" y="18" text-anchor="end" font-size="9" font-weight="700" fill="#9b8f7c" letter-spacing="1">ВОЗРАСТ</text>`;
   g+=`<line x1="${G}" y1="${top-14}" x2="${G}" y2="${H0-10}" stroke="#2c2419" stroke-opacity=".18"/>`;
@@ -1529,36 +1724,69 @@ function renderTimeline(){
   });
 
   const yr=t=>new Date(t).getUTCFullYear();
-  const bar=(i,s,e,c,op,label,tip)=>{
-    const x1=x(s),x2=Math.max(x(e),x1+3),w=x2-x1,y=rowMid(i)-8;
-    let o=`<g><title>${tip}</title><rect x="${x1}" y="${y}" width="${w}" height="17" rx="5" fill="${c}" fill-opacity="${op}"/></g>`;
-    if(label&&w>22)o+=`<text x="${x1}" y="${y-4}" font-size="9" font-weight="600" fill="#6f6353">${label}</text>`;
-    return o;
+  const bar=(i,s,e,c,op,tip,h=17,dy=-8,rx=5)=>{
+    const x1=x(clip(s)),x2=Math.max(x(clip(e)),x1+3),w=x2-x1,y=rowMid(i)+dy;
+    return `<g><title>${tip}</title><rect x="${x1}" y="${y}" width="${w}" height="${h}" rx="${rx}" fill="${c}" fill-opacity="${op}"/></g>`;
   };
 
-  /* 0 — Саде Сати */
-  for(const ep of STATE.sadeEpisodes)if(inHorizon(ep.start,ep.end)){
-    for(const c of ep.chunks)
-      g+=bar(0,c.start,c.end,'#b0512c',c===ep.main?0.9:0.25,null,`${fdm(c.start)} – ${fdm(c.end)}`);
-    g+=`<text x="${x(ep.main.start)}" y="${rowMid(0)-12}" font-size="9" font-weight="700" fill="#96431f">${yr(ep.main.start)}–${yr(ep.main.end)}</text>`;
+  /* Саде Сати */
+  if(li('sade')>=0)for(const ep of STATE.sadeEpisodes)if(vis(ep.start,ep.end)&&inHorizon(ep.start,ep.end)){
+    for(const c of ep.chunks)if(vis(c.start,c.end))
+      g+=bar(li('sade'),c.start,c.end,'#b0512c',c===ep.main?0.9:0.25,`${fdm(c.start)} – ${fdm(c.end)}`);
+    if(ep.main.start<=t1v&&ep.main.start>=t0v)
+      g+=`<text x="${x(ep.main.start)}" y="${rowMid(li('sade'))-12}" font-size="9" font-weight="700" fill="#96431f">${yr(ep.main.start)}–${yr(ep.main.end)}</text>`;
   }
-  /* 1 — возвраты Сатурна */
-  for(const gr of STATE.satReturns)for(const it of gr.items)if(it.t>=STATE.birthMs&&it.t<=hEnd()){
-    const cx=x(it.t),cy=rowMid(1);
+  /* возвраты Сатурна */
+  if(li('satret')>=0)for(const gr of STATE.satReturns)for(const it of gr.items)if(it.t>=t0v&&it.t<=t1v&&it.t>=STATE.birthMs&&it.t<=hEnd()){
+    const cx=x(it.t),cy=rowMid(li('satret'));
     g+=`<g><title>точное соединение ${fdm(it.t)}</title><circle cx="${cx}" cy="${cy}" r="6.5" fill="#fff" stroke="#b0512c" stroke-width="2.5"/></g>`;
     if(it===gr.items[0])g+=`<text x="${cx}" y="${cy-12}" text-anchor="middle" font-size="9" font-weight="700" fill="#96431f">${yr(it.t)}</text>`;
   }
-  /* 2 — узлы: период + пик */
-  for(const e of STATE.nodeEvents)if(e.t>=STATE.birthMs&&e.t<=hEnd()){
-    const full=e.kind==='full';
-    g+=bar(2,e.pstart,e.pend,'#5c7a52',full?0.75:0.3,null,
+  /* узлы */
+  if(li('nodes')>=0)for(const e of STATE.nodeEvents)if(e.t>=STATE.birthMs&&e.t<=hEnd()&&vis(e.pstart,e.pend)){
+    const full=e.kind==='full', L=li('nodes');
+    g+=bar(L,e.pstart,e.pend,'#5c7a52',full?0.75:0.3,
       `${full?'Полный возврат':'Полуоборот'}: ${fdm(e.pstart)} – ${fdm(e.pend)} · пик ${fdm(e.t)}`);
-    const cx=x(e.t),cy=rowMid(2);
-    g+=`<rect x="${cx-4}" y="${cy-4}" width="8" height="8" rx="1.5" transform="rotate(45 ${cx} ${cy})" fill="${full?'#4a6342':'#fff'}" stroke="#4a6342" stroke-width="${full?0:2}"/>`;
-    g+=`<text x="${cx}" y="${cy-13}" text-anchor="middle" font-size="8.5" font-weight="${full?700:500}" fill="#4a6342">${yr(e.t)}</text>`;
+    if(e.t>=t0v&&e.t<=t1v){
+      const cx=x(e.t),cy=rowMid(L);
+      g+=`<rect x="${cx-4}" y="${cy-4}" width="8" height="8" rx="1.5" transform="rotate(45 ${cx} ${cy})" fill="${full?'#4a6342':'#fff'}" stroke="#4a6342" stroke-width="${full?0:2}"/>`;
+      g+=`<text x="${cx}" y="${cy-13}" text-anchor="middle" font-size="8.5" font-weight="${full?700:500}" fill="#4a6342">${yr(e.t)}</text>`;
+    }
+  }
+  /* дорожки конструктора */
+  LANES.forEach((L,i)=>{
+    if(!L.cx)return;
+    const c=L.cx;
+    for(const p of c.passes){
+      if(!vis(p.start,p.end))continue;
+      if(c.mode==='slow'&&!inHorizon(p.start,p.end))continue;
+      for(const ch of p.items)if(vis(ch.start,ch.end))
+        g+=bar(i,ch.start,ch.end,c.color,0.8,`${c.label}: ${fdm(ch.start)} – ${fdm(ch.end)}`);
+      if(c.mode==='slow'&&p.start>=t0v&&p.start<=t1v)
+        g+=`<text x="${x(p.start)}" y="${rowMid(i)-12}" font-size="9" font-weight="700" fill="${c.color}">${yr(p.start)}–${yr(p.end)}</text>`;
+    }
+  });
+
+  /* Вимшоттари: махадаши + антардаши при приближении */
+  if(li('dasha')>=0&&STATE.mahas){
+    const L=li('dasha');
+    STATE.mahas.forEach((m,k)=>{
+      if(!vis(m.start,m.end))return;
+      const even=k%2===0;
+      g+=bar(L,m.start,m.end,even?'#8f6a28':'#c99a3f',even?0.42:0.34,
+        `Махадаша ${m.lord}: ${fdm(Math.max(m.start,STATE.birthMs))} – ${fdm(m.end)}`,spanY<=24?12:17,spanY<=24?-14:-8,4);
+      const x1=x(clip(m.start)),x2=x(clip(m.end));
+      if(x2-x1>26)g+=`<text x="${(x1+x2)/2}" y="${rowMid(L)+(spanY<=24?-4.5:3.5)}" text-anchor="middle" font-size="9.5" font-weight="700" fill="#5c4a1e">${spanY<=10?('Махадаша '+m.lord):(x2-x1>60?m.lord:LORD_AB[m.lord])}</text>`;
+      if(spanY<=24)for(const a of m.sub){
+        if(!vis(a.start,a.end))continue;
+        const ax1=x(clip(a.start)),ax2=Math.max(x(clip(a.end)),ax1+2);
+        g+=`<g><title>Антардаша ${m.lord}–${a.lord}: ${fdm(a.start)} – ${fdm(a.end)}</title><rect x="${ax1}" y="${rowMid(L)+2}" width="${ax2-ax1}" height="10" rx="2.5" fill="#a8842c" fill-opacity="${(m.sub.indexOf(a)%2)?0.32:0.18}" stroke="#a8842c" stroke-opacity=".35" stroke-width=".5"/></g>`;
+        if(ax2-ax1>20)g+=`<text x="${(ax1+ax2)/2}" y="${rowMid(L)+10}" text-anchor="middle" font-size="7.5" font-weight="600" fill="#6b571f">${LORD_AB[a.lord]}</text>`;
+      }
+    });
   }
   /* сегодня */
-  if(now>=STATE.birthMs&&now<=hEnd()){
+  if(now>=t0v&&now<=t1v){
     const xx=x(now),age=Math.floor(ageAt(now));
     g+=`<line x1="${xx}" y1="${top-16}" x2="${xx}" y2="${H0-10}" stroke="#8f6a28" stroke-width="2"/>`;
     g+=`<circle cx="${xx}" cy="${top-16}" r="3.5" fill="#8f6a28"/>`;
@@ -1566,9 +1794,47 @@ function renderTimeline(){
     g+=`<text x="${xx+dx}" y="${top-20}" text-anchor="${anch}" font-size="10" font-weight="700" fill="#8f6a28">сегодня · ${age} ${yearsWord(age)}</text>`;
   }
   g+='</svg>';
-  document.getElementById('tlScroll').innerHTML=g;
+  const box=document.getElementById('tlScroll');
+  box.innerHTML=g;
+  box.classList.toggle('zoomed',TL.zoom>1);
+  const zl=document.getElementById('tlZoomLab');
+  if(zl)zl.textContent=TL.zoom===1?'весь горизонт':`×${TL.zoom} · ${Math.round(spanY)} ${yearsWord(Math.round(spanY))} в окне`;
+  box.style.cursor=TL.zoom>1?'grab':'default';
 }
 
+/* панорама перетаскиванием — слушатели на контейнере, он не пересоздаётся */
+(function(){
+  const box=document.getElementById('tlScroll');
+  if(!box)return;
+  let dragging=false,sx=0,s0=0;
+  const pxToMs=px=>{
+    const svg=box.querySelector('svg'); if(!svg)return 0;
+    const w=svg.getBoundingClientRect().width;
+    return px/w*1080/896*tlSpanMs();      /* 896 = plotW(1080-168-16) */
+  };
+  box.addEventListener('pointerdown',e=>{
+    if(TL.zoom<=1||!STATE.ready)return;
+    dragging=true;sx=e.clientX;s0=TL.start;
+    box.setPointerCapture(e.pointerId);box.style.cursor='grabbing';e.preventDefault();});
+  box.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    TL.start=s0-pxToMs(e.clientX-sx);tlClamp();renderTimeline();});
+  const up=()=>{dragging=false;box.style.cursor=TL.zoom>1?'grab':'default';};
+  box.addEventListener('pointerup',up);box.addEventListener('pointercancel',up);
+})();
+
+/* зум с центровкой на середине окна (или на «сегодня», если видно) */
+function tlZoom(dir){
+  const zooms=[1,2,4,8,16];
+  let i=zooms.indexOf(TL.zoom); i=Math.max(0,Math.min(zooms.length-1,i+dir));
+  if(zooms[i]===TL.zoom)return;
+  const [t0v,t1v]=tlWindow();
+  const now=Date.now();
+  const center=(now>=t0v&&now<=t1v)?now:(t0v+t1v)/2;
+  TL.zoom=zooms[i];
+  TL.start=(center-STATE.birthMs)-tlSpanMs()/2;
+  tlClamp();renderTimeline();
+}
 function renderAll(){
   renderTimeline();renderKarma();renderSade();renderSatReturns();renderNodeReturns();
 }
@@ -1753,6 +2019,7 @@ document.getElementById('hchips').addEventListener('click',e=>{
   const b=e.target.closest('.hchip');if(!b)return;
   document.querySelectorAll('.hchip').forEach(x=>x.classList.toggle('on',x===b));
   STATE.horizon=+b.dataset.h;
+  TL.zoom=1;TL.start=0;
   if(STATE.ready)renderAll();
 });
 
@@ -1784,6 +2051,9 @@ document.getElementById('calc').addEventListener('click',()=>{
       STATE.birthMs=dateUTC.getTime();STATE.chart=chart;STATE.noon=noon;
       STATE.mahas=vimshottari(chart.moonLon,STATE.birthMs);
       computeTransits(chart,STATE.birthMs);
+      STATE.custom=[];TL.zoom=1;TL.start=0;
+      const cxr=document.getElementById('cxResults'),cxa=document.getElementById('cxActive');
+      if(cxr)cxr.innerHTML='';if(cxa)cxa.innerHTML='';
       STATE.ready=true;
 
       document.getElementById('birthLine').textContent=
@@ -1808,7 +2078,38 @@ document.getElementById('calc').addEventListener('click',()=>{
 /* справочные транзиты — сразу при загрузке */
 setTimeout(()=>{try{renderNowTransits();}catch(e){console.error(e);document.getElementById('ttbody').innerHTML='<tr><td colspan="4">Не удалось рассчитать.</td></tr>';}},200);
 
+/* конструктор: обработчики */
+document.getElementById('cxAdd')?.addEventListener('click',()=>{
+  const pk=document.getElementById('cxPlanet').value;
+  const house=+document.getElementById('cxHouse').value;
+  const fromMoon=document.querySelector('.cxseg button.on')?.dataset.from==='moon';
+  cxAddCurrent(pk,house,fromMoon);
+});
+document.querySelectorAll('.cxseg button').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.cxseg button').forEach(x=>x.classList.toggle('on',x===b));
+}));
+document.querySelectorAll('.cx-preset').forEach(b=>b.addEventListener('click',()=>{
+  document.getElementById('cxPlanet').value=b.dataset.p;
+  document.getElementById('cxHouse').value=b.dataset.h;
+  document.querySelectorAll('.cxseg button').forEach(x=>x.classList.toggle('on',x.dataset.from===(b.dataset.from||'lagna')));
+  cxAddCurrent(b.dataset.p,+b.dataset.h,(b.dataset.from||'lagna')==='moon');
+}));
+
 /* ================= раскрывающиеся карточки + переходы с ленты ================= */
+document.getElementById('tlZoomIn')?.addEventListener('click',()=>tlZoom(1));
+document.getElementById('tlZoomOut')?.addEventListener('click',()=>tlZoom(-1));
+document.getElementById('tlZoomReset')?.addEventListener('click',()=>{TL.zoom=1;TL.start=0;renderTimeline();});
+document.querySelectorAll('.fchip').forEach(ch=>{
+  ch.addEventListener('click',()=>{
+    const k=ch.dataset.lane;
+    /* не даём выключить последнюю дорожку */
+    const onCount=Object.values(TL.show).filter(Boolean).length;
+    if(TL.show[k]&&onCount<=1)return;
+    TL.show[k]=!TL.show[k];
+    ch.classList.toggle('on',TL.show[k]);
+    if(STATE.ready)renderTimeline();
+  });
+});
 document.querySelectorAll('.coll-head').forEach(btn=>{
   btn.addEventListener('click',()=>{
     const card=btn.closest('.coll');
